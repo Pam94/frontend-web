@@ -52,5 +52,35 @@ function addComment() {
     xhrequest.send(JSON.stringify(newTweetComment));
 }
 
+//Modifications in order to use the Fetch API
+function addCommentFetch() {
+    event.preventDefault();
+
+    let newTweetComment = {
+        'comment': document.getElementById('newMessage').value
+    }
+    console.log(newTweetComment);
+
+    const url = '/comment/';
+    const myInit = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newTweetComment)
+    };
+
+    fetch(url, myInit)
+        .then(function (response) {
+            response.json();
+        })
+        .then(function () {
+            console.log('TWITTED!');
+        }).catch(function (err) {
+            console.log(JSON.stringify(err));
+        });
+
+}
+
 getTweets.addEventListener('click', getAllTweets);
-mesSender.addEventListener('submit', addComment);
+mesSender.addEventListener('submit', addCommentFetch);
