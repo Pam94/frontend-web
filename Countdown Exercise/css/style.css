@@ -4,7 +4,7 @@ body {
 }
 
 #clock {
-    background-color: darkorchid;
+    background-color: darkmagenta;
     color: white;
     width: 100%;
     text-align: center;
@@ -34,4 +34,3 @@ input {
     margin: 25px;
     padding: 10px;
 }
-

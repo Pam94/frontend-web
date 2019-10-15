@@ -1,4 +1,3 @@
-
 let countDown = 0;
 let timeInterval = 0;
 
@@ -12,12 +11,14 @@ const savedTime = localStorage.getItem('countDown') || false;
 
 if (savedTime) {
     startClock(savedTime);
-    let date = new Date(savedTime);
-    endDate.valueAsDate = date;
+
+    let dated = new Date(savedTime);
+    endDate.valueAsDate = dated;
 }
 
 function timeRemaining(endTime) {
-    let t = Date.parse(endTime) - Date.parse(new Date());
+    let t = Date.parse(new Date(endTime)) - Date.parse(new Date());
+
     let seconds = Math.floor((t / 1000) % 60);
     let minutes = Math.floor((t / 1000 / 60) % 60);
     let hours = Math.floor((t / (1000 * 60 * 60)) % 24);
@@ -58,22 +59,21 @@ function clearTimer() {
     minutesSpan.innerHTML = 0;
     secondsSpan.innerHTML = 0;
 
+    countDown = 0;
+    localStorage.setItem('countDown', false);
+
     console.log('Timer reseted');
 }
 
 endDate.addEventListener('change', function (e) {
     e.preventDefault();
     clearInterval(timeInterval);
-
     const newValue = this.value;
-    console.log(newValue);
 
+    clearTimer();
     if (newValue) {
         const endDateTemp = new Date(newValue);
         localStorage.setItem('countDown', endDateTemp);
         startClock(endDateTemp);
-    } else {
-        clearTimer();
     }
-});
-
+})
