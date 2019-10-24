@@ -21,21 +21,30 @@ class UserService {
         localStorage.setItem("users", JSON.stringify(users));
     }
 
-    addUser(name, email, address, phone) {
-        this.users.push(new User({ name, email, address, phone }));
+    addUser(userName, userEmail, userAddress, userPhone) {
+        this.users.push(new User(
+            {
+                name: userName,
+                email: userEmail,
+                address: userAddress,
+                phone: userPhone,
+                marked: false
+            })
+        );
 
         this._commit(this.users);
     }
 
-    editUser(id, updatedName, updatedEmail, updatedAddress, updatedPhone) {
+    editUser(id, userName, userEmail, userAddress, userPhone) {
+        console.log(id);
         this.users = this.users.map(user =>
-            user.id === id ?
+            user.id == id ?
                 new User({
                     ...user,
-                    name: updatedName ? updatedName : user.name,
-                    email: updatedEmail ? updatedEmail : user.email,
-                    address: updatedAddress ? updatedAddress : user.address,
-                    phone: updatedPhone ? updatedPhone : user.phone
+                    name: (userName ? userName : user.name),
+                    email: (userEmail ? userEmail : user.email),
+                    address: (userAddress ? userAddress : user.address),
+                    phone: (userPhone ? userPhone : user.phone)
                 })
                 : user
         );
@@ -44,18 +53,18 @@ class UserService {
     }
 
     deleteUser(_id) {
-        this.users = this.users.filter(({ id }) => id !== _id);
-
+        this.users = this.users.filter(id => id == _id);
         this._commit(this.users);
     }
 
     markUser(_id) {
         this.users = this.users.map(user =>
-            user.id === _id ?
-                new User({
-                    ...user,
-                    marked: !user.marked
-                })
+            user.id == _id ?
+                new User(
+                    {
+                        ...user,
+                        marked: !user.marked
+                    })
                 : user
         );
 
