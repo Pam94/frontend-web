@@ -16,7 +16,7 @@ class UserController {
         this.service.bindUserListChanged(this.onUserListChanged);
         this.view.bindAddUser(this.handleAddUser);
         this.view.bindEditUser(this.handleEditUser);
-        this.view.bindDeleteUser(this.handleDeleteUser);
+        this.view.bindDeleteUser(this.handleDeleteUser, this.handleDeleteAllUser);
         this.view.bindMarkUser(this.handleMarkUser);
 
         //Display initial users
@@ -39,6 +39,9 @@ class UserController {
         this.service.deleteUser(id);
     };
 
+    handleDeleteAllUser = () => {
+        this.service.deleteAllUser();
+    }
     handleMarkUser = id => {
         this.service.markUser(id);
     };

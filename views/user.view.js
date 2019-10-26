@@ -125,8 +125,7 @@ class UserView {
     _initLocalListeners() {
         this.userList.addEventListener("click", event => {
             if (event.target.id == "editUserAction" ||
-                event.target.id == "deleteUserAction" ||
-                event.target.type == "checkbox") {
+                event.target.id == "deleteUserAction") {
                 const trParent = event.target.closest('.userElement');
                 this._userId = trParent.id;
 
@@ -140,12 +139,15 @@ class UserView {
         });
 
         this.selectAllCheckbox.addEventListener("click", event => {
-            if (event.target.checked) {
-                this.userList.forEach(tr => {
-                    const checkbox = tr.querySelector("input[type='checkbox']");
-                    //TODO mark all users
-                });
-            }
+            this.userList.childNodes.forEach(tr => {
+                const checkbox = tr.querySelector("input[type='checkbox']");
+                if (event.target.checked) {
+                    checkbox.checked = true;
+                } else {
+                    checkbox.checked = false;
+                }
+            });
+
         });
     }
 
@@ -161,10 +163,12 @@ class UserView {
         });
     }
 
-    bindDeleteUser(handler) {
+    bindDeleteUser(handlerDelete, handlerDeleteAll) {
         this.deleteUserButton.addEventListener("click", event => {
             if (this._userId) {
-                handler(this._userId);
+                handlerDelete(this._userId);
+            } else {
+                handlerDeleteAll();
             }
         });
     }
@@ -185,9 +189,11 @@ class UserView {
 
     bindMarkUser(handler) {
         this.userList.addEventListener('change', event => {
-            if (event.target.type === "checkbox" &&
-                this._userId) {
-                handler(this._userId);
+            if (event.target.type == "checkbox") {
+                const trParent = event.target.closest('.userElement');
+                if (trParent.id) {
+                    handler(trParent.id);
+                }
             }
         });
     }

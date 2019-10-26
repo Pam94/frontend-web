@@ -57,6 +57,11 @@ class UserService {
         this._commit(this.users);
     }
 
+    deleteAllUser() {
+        this.users = this.users.filter(user => !user.marked);
+        this._commit(this.users);
+    }
+
     markUser(_id) {
         this.users = this.users.map(user =>
             user.id == _id ?
