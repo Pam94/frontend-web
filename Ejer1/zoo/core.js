@@ -1,6 +1,6 @@
 const data = require("./data");
 
-function entryCalculator(entrants) {//TODO
+function entryCalculator(entrants) {
   if (!entrants || Object.values(entrants).length === 0) {
 
     return 0;
@@ -190,7 +190,6 @@ function managersForEmployee(idOrName) {
 }
 
 function employeeCoverage(idOrName) {
-  // your code here REDUCE and FILTER
   if (!idOrName) {
     return data.employees.reduce((object, employee) => {
 
