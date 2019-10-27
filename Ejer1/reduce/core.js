@@ -2,8 +2,10 @@ function sum(array) {
   return array.reduce((total, num) => total += num);
 }
 
-function productAll(array) {//TODO
-  return array.reduce(matrix => matrix.reduce((total, num) => total * num));
+function productAll(array) {
+  return array.reduce((total, matrix) => {
+    return total *= matrix.reduce((total, num) => total *= num, 1)
+  }, 1);
 }
 
 function objectify(array) {

@@ -8,8 +8,8 @@ function allEven(input) {
 // Check to see if all elements in an array
 // are of the same type.
 
-function allSameType(input) {//TODO
-  return input.every(element => element === input[0]);
+function allSameType(input) {
+  return input.every(element => typeof element === typeof input[0]);
 }
 
 // Check to see if every element in the matrix is
@@ -25,11 +25,9 @@ function positiveMatrix(input) {
 
 function allSameVowels(input) {//TODO
   return input.every(element => {
-    if (element === String) {
-      const vowels = element.filter(vowel => vowel.match(/[aeiou]/gi));
-      return vowels.every(letter => letter == vowels[0]);
-    }
-    return false;
+    const vowels = Array.from(element).filter(vowel =>
+      vowel.match(/[aeiou]/gi));
+    return vowels.every(letter => typeof letter === typeof vowels[0]);
   });
 }
 

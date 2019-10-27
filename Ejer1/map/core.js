@@ -3,13 +3,13 @@ function multiplyBy10(array) {
 }
 
 function shiftRight(array) {//TODO
-  return array.map((array, index) => array[index + array.length - 1] % array.length);
+  return array.map((array, index) => array[index + array.length - 1] % array.length, []);
 }
 
-function onlyVowels(array) {//TODO
+function onlyVowels(array) {
   return array.map(element =>
     Array.from(element).filter(item =>
-      item.match(/[aeiou]/gi)));
+      item.match(/[aeiou]/gi)).join(""));
 }
 
 function doubleMatrix(array) {
