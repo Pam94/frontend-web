@@ -2,8 +2,8 @@ function multiplyBy10(array) {
   return array.map(element => element * 10);
 }
 
-function shiftRight(array) {//TODO
-  return array.map((array, index) => array[index + array.length - 1] % array.length, []);
+function shiftRight(array) {
+  return array.map((array, index) => array[(index + (array.length - 1)) % array.length], []);
 }
 
 function onlyVowels(array) {

@@ -23,11 +23,19 @@ function positiveMatrix(input) {
 // Check that all items in an array are strings
 // and that they all only contain the same vowels.
 
-function allSameVowels(input) {//TODO
+function allSameVowels(input) {
   return input.every(element => {
-    const vowels = Array.from(element).filter(vowel =>
-      vowel.match(/[aeiou]/gi));
-    return vowels.every(letter => typeof letter === typeof vowels[0]);
+    if (typeof element === 'string') {
+      const vowels = Array.from(element).filter(vowel =>
+        vowel.match(/[aeiou]/gi));
+      if (vowels.length !== 0) {
+        return vowels.every(letter => letter === vowels[0]);
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
   });
 }
 

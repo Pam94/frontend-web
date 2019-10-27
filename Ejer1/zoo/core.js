@@ -56,35 +56,167 @@ function animalCount(species) {
 }
 
 function animalMap(options) {
-  // your code here reduce a un unico objeto y un filter para separar los tipos // de animales segun el location
+  if (!options || !options.hasOwnProperty('includeNames')) {
+    return data.animals.reduce((object, animalGroup) => {
+      const animalsByLocation = data.animals.filter(
+        element => element.location === animalGroup.location);
+      const animalNames = animalsByLocation.map(animal => animal.name);
+
+      object[animalGroup.location] = animalNames;
+      return object;
+    }, {});
+  } else {
+    if (options.hasOwnProperty('includeNames')
+      && options['includeNames'] === true) {
+      return data.animals.reduce((object, animalGroup) => {
+        let animalsByLocation = data.animals.filter(
+          element => element.location === animalGroup.location);
+
+        const animalNames = [];
+        animalsByLocation.forEach(element => {
+          let animalObject = {};
+
+          let residentFilter = element.residents;
+          if (options.hasOwnProperty('sex')) {
+            residentFilter = element.residents.filter(
+              resident => resident.sex === options['sex'], []);
+          }
+          animalObject[element.name] = residentFilter.map(
+            resident => resident.name, []);
+          animalNames.push(animalObject);
+        });
+
+        object[animalGroup.location] = animalNames;
+        return object;
+      }, {});
+    }
+  }
 }
 
 function animalPopularity(rating) {
-  // your code here reduce a un unico objeto y un filter para separar los tipos // de animales segun la popularity
+  if (!rating) {
+    return data.animals.reduce((object, animalGroup) => {
+      const animalsByPopularity = data.animals.filter(
+        element => element.popularity === animalGroup.popularity);
+      const animalNames = animalsByPopularity.map(animal => animal.name);
+
+      object[animalGroup.popularity] = animalNames;
+      return object;
+    }, {});
+  } else {
+    return data.animals.reduce((array, animalGroup) => {
+      if (rating === animalGroup.popularity) {
+        const animalsByPopularity = data.animals.filter(
+          element => element.popularity === animalGroup.popularity);
+        array = animalsByPopularity.map(animal => animal.name);
+
+      }
+      return array;
+    }, []);
+  }
 }
 
 function animalsByIds(ids) {
-  // your code here FILTER by ID y SOME
+  if (!ids) {
+    return [];
+  } else {
+    return data.animals.filter(animal => ids.includes(animal.id), []);
+  }
 }
 
 function animalByName(animalName) {
-  // your code here REDUCE y FILTER
+  if (!animalName) {
+    return {};
+  } else {
+    return data.animals.reduce((object, animalGroup) => {
+      const animal = animalGroup.residents.filter(element =>
+        element.name === animalName);
+
+      if (animal.length > 0) {
+        object['name'] = animal[0].name;
+        object['sex'] = animal[0].sex;
+        object['age'] = animal[0].age;
+        object['species'] = animalGroup.name;
+      }
+      return object;
+    }, {});
+  }
 }
 
 function employeesByIds(ids) {
-  // your code here FILTER y EVERY
+  if (!ids) {
+    return [];
+  } else {
+    return data.employees.filter(employee => ids.includes(employee.id), []);
+  }
 }
 
 function employeeByName(employeeName) {
-  // your code here FILTER by name and lastname SOME?
+  if (!employeeName) {
+    return {};
+  } else {
+    const employeeFilter = data.employees.filter(employee =>
+      employee.firstName === employeeName ||
+      employee.lastName === employeeName);
+
+    if (employeeFilter.length > 0) {
+      return employeeFilter[0];
+    }
+  }
 }
 
 function managersForEmployee(idOrName) {
-  // your code here FILTER by id, name y last name y MAP cambiar el id de los ////manager por sus nombres
+  if (!idOrName) {
+    return {};
+  } else {
+    const employeeFilter = data.employees.filter(employee =>
+      employee.id === idOrName ||
+      employee.firstName === idOrName ||
+      employee.lastName === idOrName);
+
+    let employees = employeeFilter;
+    if (employeeFilter.length > 0) {
+
+      employees[0].managers = employees[0].managers.map(manager => {
+        let employeeFilter = data.employees.filter(element => element.id === manager);
+        return employeeFilter[0].firstName + ' ' + employeeFilter[0].lastName
+      });
+
+      return employees[0];
+    } else {
+      return {};
+    }
+  }
 }
 
 function employeeCoverage(idOrName) {
   // your code here REDUCE and FILTER
+  if (!idOrName) {
+    return data.employees.reduce((object, employee) => {
+
+      let animalsResponsible = data.animals.filter(animal => employee.responsibleFor.includes(animal.id));
+
+      animalsResponsible = animalsResponsible.map(element => element.name);
+
+      object[employee.firstName + ' ' + employee.lastName] = animalsResponsible;
+      return object;
+    }, {});
+  } else {
+    const employeeFilter = data.employees.filter(employee =>
+      employee.id === idOrName ||
+      employee.firstName === idOrName ||
+      employee.lastName === idOrName);
+
+    return employeeFilter.reduce((object, employee) => {
+
+      let animalsResponsible = data.animals.filter(animal => employee.responsibleFor.includes(animal.id));
+
+      animalsResponsible = animalsResponsible.map(element => element.name);
+
+      object[employee.firstName + ' ' + employee.lastName] = animalsResponsible;
+      return object;
+    }, {});
+  }
 }
 
 module.exports = {
