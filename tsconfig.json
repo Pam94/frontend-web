@@ -1,11 +1,13 @@
 {
     "compilerOptions": {
-        "target": "es6"
+        "target": "es6",
+        "strict": true
     },
     "include": [
-        "*.ts"
+        "*.ts",
+        "Ejer2/code1.ts"
     ],
     "exclude": [
-        "node_modules"
+        "Ejer4/node_modules"
     ]
 }
