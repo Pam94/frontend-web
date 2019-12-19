@@ -1,0 +1,41 @@
+<h2>Create your Pizza!</h2>
+<div class="form-group">
+    <form (ngSubmit)="createPizza(pizzaForm)" #pizzaForm="ngForm">
+        <div ngModelGroup="pizza">
+            <div class="input-form">
+                <input type="text" placeholder="Pizza Name" name="pizzaName" ngModel required #pizzaName="ngModel">
+                <div *ngIf="pizzaName.invalid && (pizzaName.dirty || pizzaName.touched)" class="inputInvalid">
+                    <div *ngIf="pizzaName.errors.required">
+                        El nombre es ogligatorio!
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-form">
+                <input type="number" placeholder="Pizza Price" name="pizzaPrice" ngModel required #pizzaPrice="ngModel">
+                <div *ngIf="pizzaPrice.invalid && (pizzaPrice.dirty || pizzaPrice.touched)" class="inputInvalid">
+                    <div *ngIf="pizzaPrice.errors.required">
+                        El precio es ogligatorio!
+                    </div>
+                </div>
+            </div>
+            <div class="input-form">
+                <input type="url" placeholder="Pizza Image URL" name="pizzaImageUrl" ngModel required
+                    pattern="http[s]?://www.[a-zA-z0-9]*.[a-zA-Z]{2,3}/[a-zA-Z-]*.[a-zA-Z]{3}" #pizzaURL="ngModel">
+                <div *ngIf="pizzaURL.invalid && (pizzaURL.dirty || pizzaURL.touched)" class="inputInvalid">
+                    <div *ngIf="pizzaURL.errors.required">
+                        La URL de la imagen es ogligatoria!
+                    </div>
+                    <div *ngIf="pizzaURL.errors.pattern">
+                        La URL de la imagen no es válida!
+                    </div>
+                </div>
+            </div>
+            <div class="input-form">
+                <input type="checkbox" name="pizzaIsOnSale" ngModel>
+                <span>On Sale</span>
+            </div>
+        </div>
+        <button>Create</button>
+    </form>
+</div>

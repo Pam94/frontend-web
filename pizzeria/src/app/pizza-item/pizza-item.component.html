@@ -1,18 +1,13 @@
-<p>pizza-item works!</p>
-<div style="text-align:center">
-    <div class="pizza-container" [ngClass]="stockClasses">
-        <p>{{name}}</p>
-        <p>{{price}}</p>
-        <p>{{quantityInCart}}</p>
-        <input type="submit" value="Aumentar" class="canReduce" (click)="addItem()">
-        <div *ngIf="canReduce">
-            <input type="submit" value="Reducir" class="canReduce" (click)="removeItem()">
+<div class="pizza-item" [ngClass]="{ sale: pizza.getIsOnSale() }">
+    <div class="image"><img [src]="pizza.getImageUrl()" /></div>
+    <div class="details">
+        <div>{{ pizza.getName() }}</div>
+        <div>{{ pizza.getPrice() }} €</div>
+        <div>
+            <button *ngIf="pizza.getQuantityInCart() > 0" (click)="decrementInCart()">-</button>
+
+            <span>{{ pizza.getQuantityInCart() }}</span>
+            <button (click)="incrementInCart()">+</button>
         </div>
-        <img src="../../assets/{{imageUrl}}">
-        <select>
-            <option *ngFor='let pizza of pizzas' [value]="pizza.name">
-                {{pizza.name}}
-            </option>
-        </select>
     </div>
 </div>

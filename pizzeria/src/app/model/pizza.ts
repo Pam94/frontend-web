@@ -1,7 +1,8 @@
 import { Ingrediente } from './ingrediente';
 
 export class Pizza {
-    private name: string;
+    id: number;
+    name: string;
     private imageUrl: string;
     private price: number;
     private isOnSale: boolean;
@@ -9,17 +10,28 @@ export class Pizza {
     private ingredients: Ingrediente[];
 
     constructor(
+        id: number,
         name: string,
         imageUrl: string,
         price: number,
+        isOnSale: boolean,
         ingredients: Ingrediente[]
     ) {
+        this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.price = price;
-        this.isOnSale = true;
+        this.isOnSale = isOnSale;
         this.quantityInCart = 0;
         this.ingredients = ingredients;
+    }
+
+    getId() {
+        return this.id;
+    }
+
+    setId(newId: number) {
+        this.id = newId;
     }
 
     getName() {
