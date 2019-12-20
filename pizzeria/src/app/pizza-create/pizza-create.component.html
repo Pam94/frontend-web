@@ -1,0 +1,43 @@
+<h2>Create your Pizza!</h2>
+<div class="form-group">
+    <form [formGroup]="pizzaForm" (ngSubmit)="createPizza()">
+        <div class="input-form">
+            <input type="text" placeholder="Pizza Name" name="pizzaName" formControlName="pizzaName">
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="inputInvalid">
+                <div *ngIf="name.errors.required">
+                    El nombre es ogligatorio!
+                </div>
+                <div *ngIf="name.errors.namePizzaValidator">
+                    El nombre es inválido!
+                </div>
+            </div>
+        </div>
+        <div class="input-form">
+            <input type="number" placeholder="Pizza Price" name="pizzaPrice" formControlName="pizzaPrice">
+            <div *ngIf="price.invalid && (price.dirty || price.touched)" class="inputInvalid">
+                <div *ngIf="price.errors.required">
+                    El precio es ogligatorio!
+                </div>
+                <div *ngIf="price.errors.min">
+                    El precio ha de ser de un 1 euro como mínimo!
+                </div>
+            </div>
+        </div>
+        <div class="input-form">
+            <input type="url" placeholder="Pizza Image URL" name="pizzaImageUrl" formControlName="pizzaImageUrl">
+            <div *ngIf="imageURL.invalid && (imageURL.dirty || imageURL.touched)" class="inputInvalid">
+                <div *ngIf="imageURL.errors.required">
+                    La URL de la imagen es ogligatoria!
+                </div>
+                <div *ngIf="imageURL.errors.pattern">
+                    La URL de la imagen no es válida!
+                </div>
+            </div>
+        </div>
+        <div class="input-form">
+            <input type="checkbox" name="pizzaIsOnSale" formControlName="pizzaIsOnSale">
+            <span>On Sale</span>
+        </div>
+        <button>Create</button>
+    </form>
+</div>

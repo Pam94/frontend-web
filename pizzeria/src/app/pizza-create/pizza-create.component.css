@@ -1,0 +1,7 @@
+.form-group {
+    align-content: center;
+}
+
+.inputInvalid {
+    background-color: pink;
+}
