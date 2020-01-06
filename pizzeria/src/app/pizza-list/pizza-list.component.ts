@@ -10,7 +10,7 @@ import { PizzaService } from '../services/pizza.service';
     <app-pizza-item
       [pizza]="pizza"
       (quantityChange)="onQuantityChange($event)"
-      *ngFor="let pizza of pizzas"
+      *ngFor="let pizza of (pizzas| async)"
     ></app-pizza-item>
   `,
   styles: []
