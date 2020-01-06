@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Pizza } from '../model/pizza';
-import { Ingrediente } from '../model/ingrediente';
 import { PizzaQuantityChange } from '../model/pizza-quantity-change';
+import { PizzaService } from '../services/pizza.service';
 
 @Component({
   selector: 'app-pizza-list',
@@ -15,51 +15,17 @@ import { PizzaQuantityChange } from '../model/pizza-quantity-change';
   `,
   styles: []
 })
-export class PizzaListComponent implements OnInit {
+export class PizzaListComponent {
 
   public pizzas: Pizza[];
-  pizzaMargarita: Pizza;
-  pizzaBarbacoa: Pizza;
-  pizzaBBM: Pizza;
+  private service: PizzaService;
 
-  constructor() { }
-
-  ngOnInit() {
-    this.pizzaMargarita = new Pizza(
-      1,
-      "Margarita",
-      "assets/images/PF4F.png",
-      7.25,
-      false,
-      [
-        new Ingrediente("lechuga", 6, true, false),
-        new Ingrediente("bacon", 200, false, false)
-      ]);
-
-    this.pizzaBarbacoa = new Pizza(
-      2,
-      'BBQ',
-      'assets/images/PFBB.png',
-      8.5,
-      false,
-      []
-    );
-
-    this.pizzaBBM = new Pizza(
-      3,
-      'BBM',
-      'assets/images/PFBBM.png',
-      8.25,
-      true,
-      []
-    );
-
-    this.pizzas = [this.pizzaMargarita, this.pizzaBarbacoa, this.pizzaBBM];
+  constructor(private pizzaService: PizzaService) {
+    this.pizzaService.getPizzas().subscribe(pizzas => { this.pizzas = pizzas; })
   }
+
   onQuantityChange(change: PizzaQuantityChange) {
-    const pizza = this.pizzas.find(({ id }) => change.pizza.id === id);
-    pizza.setQuantityInCart(
-      pizza.getQuantityInCart() + change.changeInQuantity);
+    this.service.onQuantityChange(change.pizza.id, change.changeInQuantity);
   }
 
 }

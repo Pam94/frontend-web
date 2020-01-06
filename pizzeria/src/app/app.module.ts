@@ -10,6 +10,7 @@ import { PizzaItemComponent } from './pizza-item/pizza-item.component';
 import { PizzaListComponent } from './pizza-list/pizza-list.component';
 import { PizzaNewComponent } from './pizza-new/pizza-new.component';
 import { PizzaCreateComponent } from './pizza-create/pizza-create.component';
+import { PizzaService } from './services/pizza.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,9 @@ import { PizzaCreateComponent } from './pizza-create/pizza-create.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    PizzaService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
