@@ -6,8 +6,8 @@ import {
   Output
 } from '@angular/core';
 
-import { Pizza } from '../model/pizza';
-import { PizzaQuantityChange } from '../model/pizza-quantity-change';
+import { Pizza } from '../../model/pizza';
+import { PizzaQuantityChange } from '../../model/pizza-quantity-change';
 
 @Component({
   selector: 'app-pizza-item',

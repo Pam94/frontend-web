@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Pizza } from '../model/pizza';
-import { PizzaService } from '../services/pizza.service';
+import { Pizza } from '../../model/pizza';
+import { PizzaService } from '../../services/pizza.service';
 
 @Component({
   selector: 'app-pizza-new',

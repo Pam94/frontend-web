@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Pizza } from '../model/pizza';
-import { PizzaQuantityChange } from '../model/pizza-quantity-change';
-import { PizzaService } from '../services/pizza.service';
+import { Pizza } from '../../model/pizza';
+import { PizzaQuantityChange } from '../../model/pizza-quantity-change';
+import { PizzaService } from '../../services/pizza.service';
 
 @Component({
   selector: 'app-pizza-list',
