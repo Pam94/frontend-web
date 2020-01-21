@@ -1,0 +1,14 @@
+.pizza-item {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  display: inline-block;
+}
+
+.pizza-item .details {
+  text-align: center;
+}
+
+.pizza-item.sale {
+  background-color: lightseagreen;
+}

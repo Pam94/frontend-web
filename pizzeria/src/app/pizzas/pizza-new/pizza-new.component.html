@@ -1,0 +1,83 @@
+<h3>
+  Create Pizza
+</h3>
+
+<div>
+  <h4 class="error">{{ message }}</h4>
+  <form (ngSubmit)="createPizza(pizzaForm)" [formGroup]="pizzaForm">
+    <div>
+      <div>
+        <input
+          type="text"
+          name="name"
+          placeholder="Pizza Name"
+          formControlName="name"
+          required
+        />
+      </div>
+      <div
+        class="error"
+        *ngIf="
+          (pizzaForm.get('name').dirty || message) &&
+          pizzaForm.get('name').invalid
+        "
+      >
+        <div *ngIf="pizzaForm.get('name').errors.required">
+          Pizza name is required
+        </div>
+        <div *ngIf="pizzaForm.get('name').errors.pizzaNameValid">
+          Pizza name is invalid
+        </div>
+      </div>
+      <div>
+        <input
+          type="number"
+          name="price"
+          placeholder="Pizza Price"
+          formControlName="price"
+        />
+      </div>
+      <div
+        class="error"
+        *ngIf="
+          (pizzaForm.get('price').dirty || message) &&
+          pizzaForm.get('price').invalid
+        "
+      >
+        <div *ngIf="pizzaForm.get('price').errors.required">
+          Pizza price is required
+        </div>
+        <div *ngIf="pizzaForm.get('price').errors.min">
+          Pizza price must be at least 1
+        </div>
+      </div>
+      <div>
+        <input
+          type="text"
+          name="imageUrl"
+          placeholder="Pizza Image URL"
+          formControlName="imageUrl"
+        />
+      </div>
+      <div
+        class="error"
+        *ngIf="
+          (pizzaForm.get('imageUrl').dirty || message) &&
+          pizzaForm.get('imageUrl').invalid
+        "
+      >
+        <div *ngIf="pizzaForm.get('imageUrl').errors.required">
+          Pizza Image URL is required
+        </div>
+        <div *ngIf="pizzaForm.get('imageUrl').errors.pattern">
+          Pizza Image URL does not seem to be a valid URL
+        </div>
+      </div>
+      <div>
+        <input type="checkbox" formControlName="isOnSale" name="isOnSale" />On
+        Sale
+      </div>
+    </div>
+    <button type="submit">Create</button>
+  </form>
+</div>
