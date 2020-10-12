@@ -1,0 +1,55 @@
+<div>
+    <h2>Signup</h2>
+    <form [formGroup]="signupForm" (ngSubmit)="checkRegister()">
+        <label>Name:</label>
+        <input type="text" [formControl]="name" />
+        <span style="color: red;" *ngIf="name.errors && (name.touched || name.dirty)">
+            <span *ngIf="name.errors.required">Name is required</span>
+            <span *ngIf="name.errors.minLength">Name has to be a minimum of 3 characters</span>
+            <span *ngIf="name.errors.maxLength">Name has to be a maximum of 55 characters</span>
+            <span *ngIf="name.errors.pattern">Name has an invalid format</span>
+        </span>
+
+        <label>Surname:</label>
+        <input type="text" [formControl]="surname" />
+        <span style="color: red;" *ngIf="surname.errors && (surname.touched || surname.dirty)">
+            <span *ngIf="surname.errors.required">Surname is required</span>
+            <span *ngIf="surname.errors.minLength">Surname has to be a minimum of 3 characters</span>
+            <span *ngIf="surname.errors.maxLength">Surname has to be a maximum of 55 characters</span>
+            <span *ngIf="surname.errors.pattern">Surname has an invalid format</span>
+        </span>
+
+        <label>Type:</label>
+        <select [compareWith]="compareByUID" [formControl]="type">
+            <option [ngValue]="type" *ngFor="let type of userTypes">
+                {{type.name}}
+            </option>
+        </select>
+
+        <label>Email:</label>
+        <input type="text" [formControl]="email" />
+        <span style="color: red;" *ngIf="email.errors && (email.touched || email.dirty)">
+
+            <span *ngIf="email.errors.required">Email is required</span>
+            <span *ngIf="email.errors.pattern">Email has an invalid format</span>
+        </span>
+
+        <label>Password:</label>
+        <input type="password" [formControl]="password" />
+        <span style="color: red;" *ngIf="password.errors && (password.touched || password.dirty)">
+
+            <span *ngIf="password.errors.required">Password is required</span>
+            <span *ngIf="password.errors.minLength">Password must be at least 8 characters long</span>
+        </span>
+
+        <label>Repeat Password:</label>
+        <input type="password" [formControl]="repeatPassword" />
+        <span style="color: red;" *ngIf="repeatPassword.errors && (repeatPassword.touched || repeatPassword.dirty)">
+
+            <span *ngIf="repeatPassword.errors.required">Password is required</span>
+            <span *ngIf="repeatPassword.errors.minLength">Password must be at least 8 characters long</span>
+        </span>
+
+        <button type="submit" [disabled]="!signupForm.valid">JOIN</button>
+    </form>
+</div>

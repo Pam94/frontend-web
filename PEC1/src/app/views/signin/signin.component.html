@@ -1,0 +1,24 @@
+<div>
+    <h2>Signin</h2>
+    <form [formGroup]="signinForm" (ngSubmit)="checkLogin()">
+
+        <label>Email:</label>
+        <input type="text" [formControl]="email" />
+        <span style="color: red;" *ngIf="email.errors && (email.touched || email.dirty)">
+
+            <span *ngIf="email.errors.required">User email is required</span>
+            <span *ngIf="email.errors.pattern">User email has an invalid format</span>
+        </span>
+
+        <label>Password:</label>
+        <input type="password" [formControl]="password" />
+        <span style="color: red;" *ngIf="password.errors && (password.touched || password.dirty)">
+
+            <span *ngIf="password.errors.required">Password is required</span>
+            <span *ngIf="password.errors.minLength">Password must be at least 8 characters long</span>
+        </span>
+
+        <button type="submit" [disabled]="!signinForm.valid">LOGIN</button>
+
+    </form>
+</div>
