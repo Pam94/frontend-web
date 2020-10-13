@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User, createNewUser } from 'src/app/shared/models/user.model';
 import { Router } from '@angular/router';
+import { SigninService } from './signin.service';
+import { ProfileService } from 'src/app/shared/services/profile.service';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-signin',
@@ -17,7 +21,13 @@ export class SigninComponent implements OnInit {
   public password: FormControl;
   public signinForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) { }
+  private users: Observable<User[]>;
+
+  constructor(
+    private signinService: SigninService,
+    private profileService: ProfileService,
+    private formBuilder: FormBuilder,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.email = new FormControl('', [Validators.required, Validators.pattern(this.emailPattern)]);
@@ -33,7 +43,14 @@ export class SigninComponent implements OnInit {
     this.user.email = this.email.value;
     this.user.password = this.password.value;
 
-    this.router.navigate(['user/home']);
+    this.signinService.login({ ...this.signinForm.value }).then(user => {
+      if (!user) {
+        return;
+      }
+      this.profileService.user = user;
+      console.log(user);
+      this.router.navigate(['user/home']);
+    });
   }
 
 }

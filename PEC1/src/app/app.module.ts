@@ -24,9 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
     // Remove it when a real server is ready to receive requests.
-    HttpClientInMemoryWebApiModule.forRoot(
-      InmemoryFakeDbService, { dataEncapsulation: false }
-    ),
+    HttpClientInMemoryWebApiModule.forRoot(InmemoryFakeDbService),
   ],
   providers: [],
   bootstrap: [AppComponent]
