@@ -1,1 +1,37 @@
-<p>home works!</p>
+<h2>ACTIVITIES LIST</h2>
+<table>
+    <thead>
+        <tr>
+            <th>NAME</th>
+            <th>CATEGORY</th>
+            <th>PRICE</th>
+            <th>LANGUAGE</th>
+            <th>DATE</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let activity of activities" (click)="onSelect(activity)">
+            <td>{{activity.name}}</td>
+            <td>{{activity.category.name}}</td>
+            <td>{{activity.price}}</td>
+            <td>{{activity.language}}</td>
+            <td>{{activity.date}}</td>
+        </tr>
+    </tbody>
+</table>
+<div *ngIf="selectedActivity">
+
+    <h2>ACTIVITIES DETAILS</h2>
+    <div>
+        <label>Name: {{selectedActivity.name}}</label>
+        <label>Description: {{selectedActivity.description}}</label>
+        <label>Language: {{selectedActivity.language}}</label>
+        <label>Date: {{selectedActivity.date}}</label>
+        <label>Category: {{selectedActivity.category.name}}</label>
+        <label>Subcategory: {{selectedActivity.subcategory.name}}</label>
+        <label>Price: {{selectedActivity.price}}</label>
+        <label>Min Capacity: {{selectedActivity.minCapacity}}</label>
+        <label>Limit Capacity: {{selectedActivity.limitCapacity}}</label>
+        <label>State: {{selectedActivity.state}}</label>
+    </div>
+</div>

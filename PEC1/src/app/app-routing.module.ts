@@ -26,7 +26,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'user',
+    path: 'tourist',
     component: MainLayoutComponent,
     children: [
       {
@@ -43,8 +43,7 @@ const routes: Routes = [
       },
       {
         path: 'logout',
-        loadChildren: () =>
-          import('./views/home/home.module').then(m => m.HomeModule),
+        redirectTo: '/'
       },
       {
         path: 'activities',
@@ -52,10 +51,34 @@ const routes: Routes = [
           import('./views/activities/activities.module').then(m => m.ActivitiesModule),
         data: { tittle: 'Activities', breadcumb: 'ACTIVITIES' }
       }
-      /*{
+    ]
+  },
+  {
+    path: 'company',
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: 'home',
+        loadChildren: () =>
+          import('./views/home/home.module').then(m => m.HomeModule),
+        data: { tittle: 'Home', breadcumb: 'HOME' }
+      },
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('./views/profile/profile.module').then(m => m.ProfileModule),
+        data: { tittle: 'Profile', breadcumb: 'PROFILE' }
+      },
+      {
+        path: 'logout',
+        redirectTo: '/'
+      },
+      {
         path: 'admin',
+        loadChildren: () =>
+          import('./views/admin/admin.module').then(m => m.AdminModule),
         data: { tittle: 'Admin', breadcumb: 'ADMIN' }
-      }*/
+      }
     ]
   },
   {

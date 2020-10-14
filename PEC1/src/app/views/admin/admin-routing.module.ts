@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ActivitiesComponent } from './activities.component';
+import { AdminComponent } from './admin.component';
 import { HomeComponent } from '../home/home.component';
 import { ProfileComponent } from '../profile/profile.component';
 
@@ -8,7 +8,11 @@ import { ProfileComponent } from '../profile/profile.component';
 const routes: Routes = [
   {
     path: '',
-    component: ActivitiesComponent
+    component: AdminComponent
+  },
+  {
+    path: 'admin',
+    component: AdminComponent
   },
   {
     path: 'home',
@@ -24,4 +28,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ActivitiesRoutingModule { }
+export class AdminRoutingModule { }

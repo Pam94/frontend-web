@@ -2,11 +2,27 @@
     <img src="/assets/img/uoc_logo.png" />
     <div class="menu">
         <ul>
-            <li *ngIf="myRouter.url !== '/user/home'">
+            <li *ngIf="!isUserTourist() && !isUserCompany()">
                 <a routerLink="signin">SIGN IN</a>
             </li>
-            <li><a routerLink='signup'>JOIN NOW</a></li>
-            <li><a routerLink='profile'>PROFILE</a></li>
+            <li *ngIf="!isUserTourist() && !isUserCompany()">
+                <a routerLink='signup'>JOIN NOW</a>
+            </li>
+            <li *ngIf="isUserTourist() || isUserCompany()">
+                <a routerLink='home'>HOME</a>
+            </li>
+            <li *ngIf="isUserTourist()">
+                <a routerLink='activities'>MY ACTIVITIES</a>
+            </li>
+            <li *ngIf="isUserCompany()">
+                <a routerLink='admin'>ADMIN</a>
+            </li>
+            <li *ngIf="isUserTourist() || isUserCompany()">
+                <a routerLink='profile'>PROFILE</a>
+            </li>
+            <li *ngIf="isUserTourist() || isUserCompany()">
+                <a routerLink='logout'>LOGOUT</a>
+            </li>
         </ul>
     </div>
 </div>

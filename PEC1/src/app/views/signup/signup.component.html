@@ -7,7 +7,7 @@
             <span *ngIf="name.errors.required">Name is required</span>
             <span *ngIf="name.errors.minLength">Name has to be a minimum of 3 characters</span>
             <span *ngIf="name.errors.maxLength">Name has to be a maximum of 55 characters</span>
-            <span *ngIf="name.errors.pattern">Name has an invalid format</span>
+            <span *ngIf="name.errors.invalidName">Name has an invalid format</span>
         </span>
 
         <label>Surname:</label>

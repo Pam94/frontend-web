@@ -10,6 +10,7 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InmemoryFakeDbService } from './shared/services/inmemory-db/inmemory-fake-db.service';
 import { LayoutModule } from './shared/components/layout/layout.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AdminComponent } from './views/admin/admin.component';
 
 @NgModule({
   declarations: [

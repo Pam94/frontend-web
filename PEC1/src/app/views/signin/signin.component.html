@@ -7,7 +7,7 @@
         <span style="color: red;" *ngIf="email.errors && (email.touched || email.dirty)">
 
             <span *ngIf="email.errors.required">User email is required</span>
-            <span *ngIf="email.errors.pattern">User email has an invalid format</span>
+            <span *ngIf="email.errors.invalidEmail">User email has an invalid format</span>
         </span>
 
         <label>Password:</label>

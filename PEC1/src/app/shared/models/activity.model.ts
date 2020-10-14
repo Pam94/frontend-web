@@ -8,6 +8,7 @@ export interface Activity {
     uid: number;
     name: string;
     category: Category;
+    subcategory: SubCategory;
     description: string;
     language: LanguageName;
     date: string;
@@ -17,34 +18,12 @@ export interface Activity {
     state: string;
 }
 
-export interface CultureActivity extends Activity {
-    subcategory: CultureSubCategory;
-}
-
-export interface TurismActivity extends Activity {
-    subcategory: TurismSubCategory;
-}
-
-export interface BeachActivity extends Activity {
-    subcategory: BeachSubCategory;
-}
-
 export interface Category {
     uid: number;
     name: string;
 }
 
-export interface CultureSubCategory {
-    uid: number;
-    name: string;
-}
-
-export interface TurismSubCategory {
-    uid: number;
-    name: string;
-}
-
-export interface BeachSubCategory {
+export interface SubCategory {
     uid: number;
     name: string;
 }

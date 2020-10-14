@@ -3,6 +3,8 @@ import { User, createNewUser, UserType } from 'src/app/shared/models/user.model'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MockData } from 'src/app/shared/mock-data';
+import { NameValidator } from 'src/app/shared/directives/name-validator.directive';
+import { EmailValidator } from 'src/app/shared/directives/email-validator.directive';
 
 @Component({
   selector: 'app-signup',
@@ -10,8 +12,6 @@ import { MockData } from 'src/app/shared/mock-data';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  namePattern = "^[a-zA-Z]+$";
-  emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
 
   userTypes: UserType[];
 
@@ -31,13 +31,13 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
     this.userTypes = MockData.USERTYPES;
 
-    this.name = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(55), Validators.pattern(this.namePattern)]);
+    this.name = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(55), NameValidator.checkNameValid()]);
 
-    this.surname = new FormControl('', [Validators.minLength(3), Validators.maxLength(55), Validators.pattern(this.namePattern)]);
+    this.surname = new FormControl('', [Validators.minLength(3), Validators.maxLength(55), NameValidator.checkNameValid()]);
 
     this.type = new FormControl('', Validators.required);
 
-    this.email = new FormControl('', [Validators.required, Validators.pattern(this.emailPattern)]);
+    this.email = new FormControl('', [Validators.required, EmailValidator.checkEmailValid()]);
 
     this.password = new FormControl('', [Validators.required, Validators.minLength(8)]);
 
@@ -60,7 +60,11 @@ export class SignupComponent implements OnInit {
     this.user.email = this.email.value;
     this.user.password = this.password.value;
 
-    this.router.navigate(['user/home']);
+    if (this.user.userType.name === 'tourist') {
+      this.router.navigate(['tourist/home']);
+    } else {
+      this.router.navigate(['company/home']);
+    }
   }
 
   compareByUID(option1, option2) {

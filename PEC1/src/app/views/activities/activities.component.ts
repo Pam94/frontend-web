@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Activity } from 'src/app/shared/models/activity.model';
+import { ProfileService } from 'src/app/shared/services/profile.service';
 
 @Component({
   selector: 'app-activities',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActivitiesComponent implements OnInit {
 
-  constructor() { }
+  activities: Activity[];
+  selectedActivity: Activity;
+
+  constructor(private profileService: ProfileService) { }
 
   ngOnInit(): void {
+    this.activities = this.profileService.user.activities;
+  }
+
+  onSelect(activity: Activity): void {
+    this.selectedActivity = activity;
   }
 
 }

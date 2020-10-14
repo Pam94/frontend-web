@@ -1,5 +1,67 @@
-<p>profile works!</p>
-<h2>Profile</h2>
+<h2>PROFILE</h2>
 <form [formGroup]="profileForm" (ngSubmit)="checkProfile()">
 
+    <div *ngIf="!this.isTourist">
+        <label>Company Name:</label>
+        <input type="text" [formControl]="companyName" />
+        <span style="color: red;" *ngIf="companyName.errors && (companyName.touched || companyName.dirty)">
+            <span *ngIf="companyName.errors.required">Company Name is required</span>
+            <span *ngIf="companyName.errors.minLength">Company Name has to be a minimum of 3 characters</span>
+            <span *ngIf="companyName.errors.maxLength">Company Name has to be a maximum of 55 characters</span>
+        </span>
+
+        <label>Company Description:</label>
+        <input type="text" [formControl]="companyDescription" />
+
+        <label>CIF:</label>
+        <input type="text" [formControl]="CIF" />
+        <span style="color: red;" *ngIf="CIF.errors && (CIF.touched || CIF.dirty)">
+            <span *ngIf="CIF.errors.required">CIF is required</span>
+        </span>
+
+    </div>
+
+    <label>Name:</label>
+    <input type="text" [formControl]="name" />
+    <span style="color: red;" *ngIf="name.errors && (name.touched || name.dirty)">
+        <span *ngIf="name.errors.required">Name is required</span>
+        <span *ngIf="name.errors.minLength">Name has to be a minimum of 3 characters</span>
+        <span *ngIf="name.errors.maxLength">Name has to be a maximum of 55 characters</span>
+        <span *ngIf="name.errors.invalidName">Name has an invalid format</span>
+    </span>
+
+    <label>Surname:</label>
+    <input type="text" [formControl]="surname" />
+    <span style="color: red;" *ngIf="surname.errors && (surname.touched || surname.dirty)">
+
+        <span *ngIf="surname.errors.minLength">Surname has to be a minimum of 3 characters</span>
+        <span *ngIf="surname.errors.maxLength">Surname has to be a maximum of 55 characters</span>
+        <span *ngIf="surname.errors.invalidName">Surname has an invalid format</span>
+    </span>
+
+    <label>BirthDate:</label>
+    <input type="text" [formControl]="birthdate" />
+    <span style="color: red;" *ngIf="birthdate.errors && (birthdate.touched || birthdate.dirty)">
+
+        <span *ngIf="birthdate.errors.invalidDate">Birthdate has an invalid format</span>
+    </span>
+
+    <label>Phone:</label>
+    <input type="tel" [formControl]="phone" />
+
+    <label>Nationality</label>
+    <select [compareWith]="compareByUID" [formControl]="nationality">
+        <option [ngValue]="nationality" *ngFor="let nationality of nationalities">
+            {{nationality.name}}
+        </option>
+    </select>
+
+    <label>NIF:</label>
+    <input type="text" [formControl]="NIF" />
+    <span style="color: red;" *ngIf="NIF.errors && (NIF.touched || NIF.dirty)">
+        <span *ngIf="NIF.errors.required">NIF is required</span>
+    </span>
+
+    <label>About Me:</label>
+    <input type="text" [formControl]="aboutMe" />
 </form>

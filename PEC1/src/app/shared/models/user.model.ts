@@ -11,7 +11,7 @@ export interface User {
     surname: string;
     birthdate: string;
     phone: string;
-    nationality: string;
+    nationality: Nationality;
     NIF: string;
     aboutMe: string;
 
@@ -36,6 +36,11 @@ export interface Company extends User {
     companyName: string;
     companyDescription: string;
     CIF: string;
+}
+
+export interface Nationality {
+    uid: number;
+    name: string;
 }
 
 export function createNewUser(user?: User): User {

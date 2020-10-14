@@ -16,4 +16,12 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  isUserTourist() {
+    return this.myRouter.url.match('/tourist/*');
+  }
+
+  isUserCompany() {
+    return this.myRouter.url.match('/company/*');
+  }
+
 }

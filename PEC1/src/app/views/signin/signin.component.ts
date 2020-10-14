@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { SigninService } from './signin.service';
 import { ProfileService } from 'src/app/shared/services/profile.service';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { EmailValidator } from 'src/app/shared/directives/email-validator.directive';
 
 @Component({
   selector: 'app-signin',
@@ -13,15 +13,12 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
-  emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
 
   public user: User = createNewUser();
 
   public email: FormControl;
   public password: FormControl;
   public signinForm: FormGroup;
-
-  private users: Observable<User[]>;
 
   constructor(
     private signinService: SigninService,
@@ -30,7 +27,7 @@ export class SigninComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.email = new FormControl('', [Validators.required, Validators.pattern(this.emailPattern)]);
+    this.email = new FormControl('', [Validators.required, EmailValidator.checkEmailValid()]);
     this.password = new FormControl('', [Validators.required, Validators.minLength(8)]);
 
     this.signinForm = this.formBuilder.group({
@@ -49,8 +46,12 @@ export class SigninComponent implements OnInit {
       }
       this.profileService.user = user;
       console.log(user);
-      this.router.navigate(['user/home']);
+      console.log(user.userType.name);
+      if (user.userType.name === 'tourist') {
+        this.router.navigate(['tourist/home']);
+      } else {
+        this.router.navigate(['company/home']);
+      }
     });
   }
-
 }
