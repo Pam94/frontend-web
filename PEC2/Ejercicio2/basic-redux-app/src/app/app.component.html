@@ -1,0 +1,28 @@
+<div class="jumbotron d-flex align-items-center min-vh-100">
+  <div class="container text-center">
+    <div class="row" style="text-align: center;">
+      <div class="col">
+        <h1>Counter (Mother)</h1>
+        <h1>{{ counter }}</h1>
+      </div>
+    </div>
+
+    <div class="row" style="text-align: center;">
+      <div class="col">
+        <button (click)="increase()" type="button" class="btn btn-primary btn-lg">Increase ( +1 )</button>
+      </div>
+    </div>
+
+    <div class="row mt-2" style="text-align: center;">
+      <div class="col">
+        <button (click)="decrease()" type="button" class="btn btn-primary btn-lg">Decrease ( -1 )</button>
+      </div>
+    </div>
+
+    <hr />
+    <hr />
+    <!--<app-daughter [counter]="counter" (changeCounter)="counter = $event"></app-daughter>-->
+    <app-daughter></app-daughter>
+
+  </div>
+</div>
