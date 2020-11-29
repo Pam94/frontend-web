@@ -1,0 +1,29 @@
+<h1>Login</h1>
+<form class="login" [formGroup]="loginForm" (ngSubmit)="checkLogin()">
+  <label for="email">Email</label>
+  <input type="email" name="email" id="email" required [formControl]="email">
+  <div *ngIf="email.touched && email.errors">
+    <div class="error" *ngIf="email.errors.required">
+      Email is required.
+    </div>
+    <div class="error" *ngIf="email.errors.pattern">
+      Please, provide a valid email
+    </div>
+  </div>
+  <label for="password">Password</label>
+  <input type="password" name="password" id="password" required [formControl]="password">
+  <div *ngIf="password.touched && password.errors">
+    <div class="error" *ngIf="password.errors.required">
+      Password is required.
+    </div>
+    <div class="error" *ngIf="password.errors.minlength">
+      Password has to have at least 8 characters
+    </div>
+  </div>
+  <div>
+    <p class="error" *ngIf="error">{{error}}</p>
+    <button type="submit" [disabled]="!loginForm.valid">Login</button>
+  </div>
+  
+
+</form>

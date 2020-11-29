@@ -1,0 +1,107 @@
+<div *ngIf="activity">
+  <h2>Activity details</h2>
+  <form class="activity" [formGroup]="activityForm" (ngSubmit)="save()">
+
+    <label for="name">Name*</label>
+    <input [formControl]="name" type="text" name="name" id="name" required>
+    <div *ngIf="name.touched && name.errors">
+      <div class="error" *ngIf="name.errors.required">
+        name is required.
+      </div>
+      <div class="error" *ngIf="name.errors.minLength || name.errors.maxLength">
+        Name should be between 3 and 35 characters
+      </div>
+    </div>
+
+    <label for="description">Description</label>
+    <input [formControl]="description" type="text" name="description" id="description" >
+
+    <label for="type">Language*</label>
+    <select [formControl]="language" required>
+      <option *ngFor="let item of languageList" [value]="item.value">{{item.label}}</option>
+    </select>
+    <div *ngIf="language.touched && language.errors">
+      <div class="error" *ngIf="language.errors.required">
+        language is required.
+      </div>
+    </div>
+
+  
+    <label for="type">Category*</label>
+    <select [formControl]="category" required>
+      <option *ngFor="let item of categoryList" [value]="item">{{item}}</option>
+    </select>
+    <div *ngIf="category.touched && category.errors">
+      <div class="error" *ngIf="category.errors.required">
+        category is required.
+      </div>
+    </div>
+
+    <label for="type">Subcategory*</label>
+    <select [formControl]="subcategory" required>
+      <option *ngFor="let item of subcategoryList" [value]="item">{{item}}</option>
+    </select>
+    <div *ngIf="subcategory.touched && subcategory.errors">
+      <div class="error" *ngIf="subcategory.errors.required">
+        subcategory is required.
+      </div>
+    </div>
+
+    <label for="minimumCapacity">Price</label>
+    <input min="0" [formControl]="price" type="number" name="price" id="price" required >
+    <div *ngIf="price.touched && price.errors">
+      <div class="error" *ngIf="price.errors.required">
+        price is required.
+      </div>
+      <div class="error" *ngIf="price.errors.min">
+        price needs to be grater than 0.
+      </div>
+    </div>
+
+    <label for="minimumCapacity">Minimum capacity</label>
+    <input min="0" [formControl]="minimumCapacity" type="number" name="minimumCapacity" id="minimumCapacity" required >
+    <div *ngIf="minimumCapacity.touched && minimumCapacity.errors">
+      <div class="error" *ngIf="minimumCapacity.errors.required">
+        minimum Capacity is required.
+      </div>
+      <div class="error" *ngIf="minimumCapacity.errors.min">
+        minimum capacity needs to be grater than 0.
+      </div>
+    </div>
+
+    <label for="limitCapacity">Limit capacity</label>
+    <input min="0" [formControl]="limitCapacity" type="number" name="limitCapacity" id="limitCapacity" required >
+    <div *ngIf="limitCapacity.touched && limitCapacity.errors">
+      <div class="error" *ngIf="limitCapacity.errors.required">
+        limit Capacity is required.
+      </div>
+      <div class="error" *ngIf="limitCapacity.errors.min">
+        limit Capacity needs to be grater than 0.
+      </div>
+    </div>
+
+    <div *ngIf="ownerId">
+      <label for="cancelled">Cancelled</label>
+      <input [formControl]="cancelled" type="checkbox" name="cancelled" id="cancelled" >
+    </div>
+
+
+    <p>
+      <strong>People registered:</strong> {{peopleRegistered}}
+    </p>
+    <p>
+      <strong>Status:</strong>  {{state}}
+    </p>
+    
+    <div *ngIf="user && isTourist">
+      <button *ngIf="!alreadySignedUp" [disabled]="state != 'Places available'" (click)="signup()">Sign up</button>
+      <button *ngIf="alreadySignedUp" [disabled]="state != 'Places available'" (click)="cancel()">Cancel registration</button>
+
+      <button [class.active]="isFavorite" (click)="toggleFavorite()"><span *ngIf="!isFavorite">Add to favorites &hearts;</span> <span *ngIf="isFavorite">Remove from favorites &hearts;</span></button>
+    </div>
+    
+    <div *ngIf="ownerId">
+      <button type="submit" [disabled]="!activityForm.valid">Save</button>
+    </div>
+  </form>
+</div>

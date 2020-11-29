@@ -1,0 +1,141 @@
+<h1>Profile</h1>
+<form class="profile" [formGroup]="profileForm" (ngSubmit)="save()">
+
+  <label for="name">Name*</label>
+  <input type="text" name="name" id="name" required [formControl]="name">
+  <div *ngIf="name.touched && name.errors">
+    <div class="error" *ngIf="name.errors.required">
+      name is required.
+    </div>
+    <div class="error" *ngIf="name.errors.minLength || name.errors.maxLength">
+      Name should be between 3 and 35 characters
+    </div>
+    <div class="error" *ngIf="name.errors.pattern">
+      Please, do not use special characters
+    </div>
+    <div class="error" *ngIf="name.errors.noWhiteSpace">
+      Please, remove white spaces at the beginning or at the end
+    </div>
+  </div>
+
+  <label for="surname">Surname*</label>
+  <input type="text" name="surname" id="surname" required [formControl]="surname">
+  <div *ngIf="surname.touched && surname.errors">
+    <div class="error" *ngIf="surname.errors.required">
+      surname is required.
+    </div>
+    <div class="error" *ngIf="surname.errors.minLength || surname.errors.maxLength">
+      surname should be between 3 and 35 characters
+    </div>
+    <div class="error" *ngIf="surname.errors.pattern">
+      Please, do not use special characters
+    </div>
+    <div class="error" *ngIf="surname.errors.noWhiteSpace">
+      Please, remove white spaces at the beginning or at the end
+    </div>
+  </div>
+
+  <label for="birthdate">Birthdate</label>
+  <input type="date" name="birthdate" id="birthdate" [formControl]="birthdate">
+
+  <label for="phone">Phone</label>
+  <input type="tel" name="phone" id="phone" [formControl]="phone">
+  
+
+  <label for="type">Nationality*</label>
+  <select name="type" [formControl]="nationality" required>
+    <option *ngFor="let nationality of nationalities" [value]="nationality.code" [label]="nationality.label"></option>
+  </select>
+
+  <label for="nif">NIF*</label>
+  <input type="text" name="nif" id="nif" [formControl]="nif" required>
+  <div *ngIf="nif.errors && nif.errors.nif" class="error">
+    Please, provide a valid spanish NIF
+  </div>
+
+  <label for="aboutMe">About me</label>
+  <input type="text" name="aboutMe" id="aboutMe" [formControl]="aboutMe">
+
+  <div class="profile" *ngIf="user.type == 1">
+    <label for="companyName">Company name*</label>
+    <input type="text" name="companyName" id="companyName" [formControl]="companyName" required>
+    <div *ngIf="companyName.touched && companyName.errors">
+      <div class="error" *ngIf="companyName.errors.required">
+        companyName is required.
+      </div>
+      <div class="error" *ngIf="companyName.errors.minLength || companyName.errors.maxLength">
+        companyName should be between 3 and 35 characters
+      </div>
+      <div class="error" *ngIf="companyName.errors.noWhiteSpace">
+        Please, remove white spaces at the beginning or at the end
+      </div>
+    </div>
+
+    <label for="companyDescription">Company description</label>
+    <input type="text" name="companyDescription" id="companyDescription" [formControl]="companyDescription">
+
+    <label for="cif">CIF*</label>
+    <input type="text" name="cif" id="cif" [formControl]="cif" required>
+    <div *ngIf="cif.touched && cif.errors">
+      <div class="error" *ngIf="cif.errors.required">
+        cif is required.
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <p class="error" *ngIf="error">{{error}}</p>
+  <p class="message" *ngIf="message">{{message}}</p>
+
+  <div>
+    <button type="submit" [disabled]="!profileForm.valid">Update profile information</button>
+  </div>
+  
+
+</form>
+
+<h2>Education</h2>
+
+<table *ngIf="educations && educations.length > 0">
+  <tr>
+    <th>Type</th>
+    <th>Level</th>
+    <th>Name</th>
+    <th>University</th>
+    <th>Finish date</th>
+    <th>Actions</th>
+  </tr>
+
+  <tr *ngFor="let item of educations">
+    <td>{{item.type}}</td>
+    <td>{{item.level}}</td>
+    <td>{{item.name}}</td>
+    <td>{{item.university}}</td>
+    <td>{{item.finishDate}}</td>
+    <td><button (click)="deleteEducation(item.id)">Delete</button> <button (click)="editEducation(item.id)">Edit</button></td>
+  </tr>
+</table>
+
+<button routerLink="/education" class="button">Add education</button>
+
+<h2>Languages</h2>
+
+<table *ngIf="languages && languages.length > 0">
+  <tr>
+    <th>Level</th>
+    <th>Language</th>
+    <th>Finish date</th>
+    <th>Actions</th>
+  </tr>
+
+  <tr *ngFor="let item of languages">
+    <td>{{item.level}}</td>
+    <td>{{item.language}}</td>
+    <td>{{item.finishDate}}</td>
+    <td><button (click)="deleteLanguage(item.id)">Delete</button> <button (click)="editLanguage(item.id)">Edit</button></td>
+  </tr>
+</table>
+
+<button routerLink="/language" class="button">Add language</button>

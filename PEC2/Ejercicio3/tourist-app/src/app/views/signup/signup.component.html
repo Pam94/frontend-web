@@ -1,0 +1,86 @@
+<h1>Join now!</h1>
+<form class="signup" [formGroup]="signupForm" (ngSubmit)="joinNow()">
+
+  <label for="name">Name*</label>
+  <input type="text" name="name" id="name" required [formControl]="name">
+  <div *ngIf="name.touched && name.errors">
+    <div class="error" *ngIf="name.errors.required">
+      name is required.
+    </div>
+    <div class="error" *ngIf="name.errors.minLength || name.errors.maxLength">
+      Name should be between 3 and 35 characters
+    </div>
+    <div class="error" *ngIf="name.errors.pattern">
+      Please, do not use special characters
+    </div>
+    <div class="error" *ngIf="name.errors.noWhiteSpace">
+      Please, remove white spaces at the beginning or at the end
+    </div>
+  </div>
+
+  <label for="surname">Surname*</label>
+  <input type="text" name="surname" id="surname" required [formControl]="surname">
+  <div *ngIf="surname.touched && surname.errors">
+    <div class="error" *ngIf="surname.errors.required">
+      surname is required.
+    </div>
+    <div class="error" *ngIf="surname.errors.minLength || surname.errors.maxLength">
+      surname should be between 3 and 35 characters
+    </div>
+    <div class="error" *ngIf="surname.errors.pattern">
+      Please, do not use special characters
+    </div>
+    <div class="error" *ngIf="surname.errors.noWhiteSpace">
+      Please, remove white spaces at the beginning or at the end
+    </div>
+  </div>
+
+  <label for="type">Type*</label>
+  <select name="type" [formControl]="type" required>
+    <option *ngFor="let key of keys" [value]="key" [label]="types[key]"></option>
+  </select>
+
+  <label for="email">Email*</label>
+  <input type="email" name="email" id="email" required [formControl]="email">
+  <div *ngIf="email.touched && email.errors">
+    <div class="error" *ngIf="email.errors.required">
+      Email is required.
+    </div>
+    <div class="error" *ngIf="email.errors.pattern">
+      Please, provide a valid email
+    </div>
+  </div>
+
+  <label for="password">Password*</label>
+  <input type="password" name="password" id="password" required [formControl]="password">
+  <div *ngIf="password.touched && password.errors">
+    <div class="error" *ngIf="password.errors.required">
+      Password is required.
+    </div>
+    <div class="error" *ngIf="password.errors.minlength">
+      Password has to have at least 8 characters
+    </div>
+  </div>
+
+  <label for="confirmpassword">Repeat Password*</label>
+  <input type="password" name="confirmpassword" id="confirmpassword" required [formControl]="confirmpassword">
+  <div *ngIf="confirmpassword.touched && confirmpassword.errors">
+    <div class="error" *ngIf="confirmpassword.errors.required">
+      confirmpassword is required.
+    </div>
+    <div class="error" *ngIf="confirmpassword.errors.minlength">
+      confirmpassword has to have at least 8 characters
+    </div>
+    <div class="error" *ngIf="confirmpassword.errors.mustMatch">
+      Passwords don't match
+    </div>
+  </div>
+
+  <p class="error" *ngIf="error">{{error}}</p>
+
+  <div>
+    <button type="submit" [disabled]="!signupForm.valid">Join now!</button>
+  </div>
+  
+
+</form>

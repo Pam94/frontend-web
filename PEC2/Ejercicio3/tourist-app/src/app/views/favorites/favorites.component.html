@@ -1,0 +1,6 @@
+<ul>
+  <li *ngFor="let item of favorites">
+    {{item.name}}
+    <button (click)="remove(item.id)">X</button>
+  </li>
+</ul>

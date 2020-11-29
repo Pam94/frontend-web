@@ -1,0 +1,23 @@
+<h1>Education form</h1>
+<form class="language" [formGroup]="languageForm" (ngSubmit)="save()">
+
+  <label for="type">Level</label>
+  <select [formControl]="level">
+    <option *ngFor="let item of levelList" [value]="item">{{item}}</option>
+  </select>
+
+  <label for="type">Language*</label>
+  <select [formControl]="language" required>
+    <option *ngFor="let item of languageList" [value]="item">{{item}}</option>
+  </select>
+
+  <label for="finishDate">Finish date</label>
+  <input [formControl]="finishDate" type="date" name="finishDate" id="finishDate">
+  
+
+
+
+<div>
+  <button type="submit" [disabled]="!languageForm.valid">Save</button>
+</div>
+</form>

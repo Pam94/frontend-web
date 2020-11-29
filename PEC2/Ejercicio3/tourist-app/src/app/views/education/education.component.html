@@ -1,0 +1,34 @@
+<h1>Education form</h1>
+<form class="education" [formGroup]="educationForm" (ngSubmit)="save()">
+  <label for="type">Type*</label>
+  <select [formControl]="type" required>
+    <option *ngFor="let item of typeList" [value]="item">{{item}}</option>
+  </select>
+
+  <label for="type">Level</label>
+  <select [formControl]="level">
+    <option *ngFor="let item of levelList" [value]="item">{{item}}</option>
+  </select>
+
+  <label for="name">Name*</label>
+  <input [formControl]="name" type="text" name="name" id="name" required>
+  <div class="error" *ngIf="name.touched && name.errors">
+      Name should be between 3 and 35 characters
+  </div>
+
+  <label for="university">University*</label>
+  <input [formControl]="university" type="text" name="university" id="university" required>
+  <div class="error" *ngIf="university.touched && university.errors">
+      Name should be between 3 and 35 characters
+  </div>
+
+  <label for="finishDate">Finish date</label>
+  <input [formControl]="finishDate" type="date" name="finishDate" id="finishDate">
+  
+
+
+
+<div>
+  <button type="submit" [disabled]="!educationForm.valid">Save</button>
+</div>
+</form>

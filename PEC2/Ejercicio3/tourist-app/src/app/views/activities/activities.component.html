@@ -1,0 +1,28 @@
+<div class="flex justify-between padding">
+  <div class="list">
+    <button *ngIf="ownerId" (click)="onSelected(null)">Add activity</button>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+      <tr *ngFor="let item of activities">
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.category}}</td>
+        <td>{{item.price}}</td>
+        <td>{{item.date}}</td>
+        <td><button (click)="onSelected(item)">Open</button></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="detail" *ngIf="selectedActivity">
+    <app-activity-details [ownerId]="ownerId" (edited)="onEdited()" [id]="selectedActivity && selectedActivity.id ? selectedActivity.id : null"></app-activity-details>
+  </div>
+</div>
+
