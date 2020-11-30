@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Activity } from 'src/app/shared/models/Activity';
+import { Store } from '@ngrx/store';
+import { generate } from 'rxjs';
+import { AppState } from 'src/app/app.reducer';
+import { Activity, generateMockActivity } from 'src/app/shared/models/Activity';
 import { ActivitiesService } from 'src/app/shared/services/activities.service';
 
 @Component({
@@ -9,7 +12,7 @@ import { ActivitiesService } from 'src/app/shared/services/activities.service';
 })
 export class ActivitiesComponent implements OnInit {
 
-  activities: Activity[]
+  activities: Activity[] = [];
 
   @Input() selectedActivity: Activity
 
@@ -21,11 +24,12 @@ export class ActivitiesComponent implements OnInit {
 
 
   constructor(
-    private activitiesService: ActivitiesService
-  ) { }
+    private activitiesService: ActivitiesService,
+    private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.getActivities()
+    this.getActivities();
+    this.store.select('activities').subscribe(activities => this.activities = activities);
   }
 
   getActivities() {
@@ -47,7 +51,7 @@ export class ActivitiesComponent implements OnInit {
     if (activity) {
       this.selectedActivity = activity
     } else {
-      this.selectedActivity = new Activity()
+      this.selectedActivity = generateMockActivity();
     }
 
   }

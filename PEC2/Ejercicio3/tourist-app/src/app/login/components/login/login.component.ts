@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/shared/models/User';
+import { generateMockUser, User } from 'src/app/shared/models/User';
 import { UsersService } from 'src/app/shared/services/users.service';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
+import { AppState } from 'src/app/app.reducer';
+import { Store } from '@ngrx/store';
+import { logIn } from '../../login.action';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  public user: User = new User()
+  public user: User = generateMockUser();
   public email: FormControl
   public password: FormControl
   public loginForm: FormGroup
@@ -21,7 +24,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private usersService: UsersService,
-    private router: Router) { }
+    private router: Router,
+    private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.email = new FormControl('', [
@@ -41,11 +45,11 @@ export class LoginComponent implements OnInit {
   }
 
 
-  public async checkLogin(): Promise<void> {
+  /*public async checkLogin(): Promise<void> {
     this.user.email = this.email.value
     this.user.password = this.password.value
     const login = await this.usersService.login(this.user.email, this.user.password)
-    
+
     if (login) {
       this.usersService.getCurrentUser()
       this.error = null
@@ -53,7 +57,15 @@ export class LoginComponent implements OnInit {
     } else {
       this.error = 'Wrong email or password'
     }
-    
+
+  }*/
+
+  checkLogin() {
+    if (this.loginForm.valid) {
+      this.store.dispatch(logIn({ email: this.email.value, password: this.password.value }));
+      this.email.reset();
+      this.password.reset();
+    }
   }
 
 }

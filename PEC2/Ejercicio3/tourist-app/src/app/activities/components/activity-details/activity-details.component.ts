@@ -1,10 +1,13 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Activity } from 'src/app/shared/models/Activity';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
+import { Activity, generateMockActivity } from 'src/app/shared/models/Activity';
 import { User } from 'src/app/shared/models/User';
 import { ActivitiesService } from 'src/app/shared/services/activities.service';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { UsersService } from 'src/app/shared/services/users.service';
+import { cancellActivity, createActivity, editActivity, signUpActivity } from '../../activities.action';
 
 @Component({
   selector: 'app-activity-details',
@@ -19,7 +22,7 @@ export class ActivityDetailsComponent implements OnInit {
   @Output() edited = new EventEmitter<boolean>()
 
 
-  public activity: Activity = new Activity()
+  public activity: Activity = generateMockActivity();
 
   public activityForm: FormGroup
   public name: FormControl
@@ -46,7 +49,8 @@ export class ActivityDetailsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private usersService: UsersService,
     private activitiesService: ActivitiesService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private store: Store<AppState>
   ) { }
 
   public isTourist = this.usersService.currentUser && this.usersService.currentUser.type == 0
@@ -143,7 +147,7 @@ export class ActivityDetailsComponent implements OnInit {
     });
   }
 
-  async save(): Promise<void | Activity> {
+  /*async save(): Promise<void | Activity> {
     this.activity.name = this.name.value
     this.activity.description = this.description.value
     this.activity.category = this.category.value
@@ -161,6 +165,40 @@ export class ActivityDetailsComponent implements OnInit {
       return this.activitiesService.updateActivity(this.activity).toPromise().then(() => this.edited.emit(true))
     } else {
       return this.activitiesService.addActivity(this.activity).toPromise().then(() => this.edited.emit(true))
+    }
+  }*/
+
+  save(): void {
+    this.activity.name = this.name.value
+    this.activity.description = this.description.value
+    this.activity.category = this.category.value
+    this.activity.subcategory = this.subcategory.value
+    this.activity.language = this.language.value
+    this.activity.price = this.price.value
+    this.activity.minimumCapacity = this.minimumCapacity.value
+    this.activity.limitCapacity = this.limitCapacity.value
+    this.activity.cancelled = this.cancelled.value || false
+    this.activity.userId = this.usersService.currentUser ? this.usersService.currentUser.id : null
+
+    if (!this.activityForm.invalid) {
+      if (this.id) {
+        this.store.dispatch(
+          editActivity({ id: this.activity.id, newActivity: this.activity })
+        );
+      } else {
+        this.store.dispatch(
+          createActivity({
+            name: this.activity.name,
+            category: this.activity.category,
+            subcategory: this.activity.subcategory,
+            price: this.activity.price,
+            language: this.activity.language,
+            minimumCapacity: this.activity.minimumCapacity,
+            limitCapacity: this.activity.limitCapacity,
+            userId: this.activity.userId
+          })
+        );
+      }
     }
   }
 
@@ -187,7 +225,7 @@ export class ActivityDetailsComponent implements OnInit {
   getActivity(): void {
     const id = this.id
     if (!id) {
-      this.activity = new Activity()
+      this.activity = generateMockActivity();
 
       if (this.activityForm) {
         return this.activityForm.setValue({
@@ -243,7 +281,7 @@ export class ActivityDetailsComponent implements OnInit {
     }
   }
 
-  async cancel() {
+  /*async cancel() {
     const userId = this.usersService.currentUser ? this.usersService.currentUser.id : null
     if (userId) {
       const myActivities = await this.activitiesService.getMyActivities(userId).toPromise()
@@ -254,13 +292,21 @@ export class ActivityDetailsComponent implements OnInit {
         this.getActivity()
       })
     }
+  }*/
+
+  cancel() {
+    this.store.dispatch(cancellActivity({ id: this.activity.id }));
   }
 
-  signup() {
+  /*signup() {
     return this.activitiesService.signUpActivity(this.usersService.currentUser.id, this.id).subscribe(() => {
       this.getPeopleRegistered(this.id)
       this.getActivity()
     })
+  }*/
+
+  signup() {
+    this.store.dispatch(signUpActivity({ activityId: this.id, userId: this.activity.userId }));
   }
 
   toggleFavorite() {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from 'src/app/shared/models/User';
+import { generateMockUser, User } from 'src/app/shared/models/User';
 import { UserType } from 'src/app/shared/models/UserType';
 import { UsersService } from 'src/app/shared/services/users.service';
 
@@ -12,7 +12,7 @@ import { UsersService } from 'src/app/shared/services/users.service';
 })
 export class SignupComponent implements OnInit {
 
-  public user: User = new User()
+  public user: User = generateMockUser();
   public name: FormControl
   public surname: FormControl
   public type: FormControl
@@ -30,9 +30,9 @@ export class SignupComponent implements OnInit {
     private formBuilder: FormBuilder,
     private usersService: UsersService,
     private router: Router
-    ) { 
+  ) {
     this.keys = Object.keys(this.types).filter(k => !isNaN(Number(k)));
-   }
+  }
 
   ngOnInit(): void {
 
@@ -85,28 +85,28 @@ export class SignupComponent implements OnInit {
 
   noWhitespaceValidator(): ValidatorFn {
     const nameRe = new RegExp('(^\s+|\s+$)')
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const forbidden = nameRe.test(control.value);
-      return forbidden ? {noWhiteSpace: {value: control.value}} : null;
+      return forbidden ? { noWhiteSpace: { value: control.value } } : null;
     }
   }
 
   mustMatch(controlName: string, matchingControlName: string) {
     return (formGroup: FormGroup) => {
-        const control = formGroup.controls[controlName];
-        const matchingControl = formGroup.controls[matchingControlName];
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
 
-        if (matchingControl.errors && !matchingControl.errors.mustMatch) {
-            // return if another validator has already found an error on the matchingControl
-            return;
-        }
+      if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+        // return if another validator has already found an error on the matchingControl
+        return;
+      }
 
-        // set error on matchingControl if validation fails
-        if (control.value !== matchingControl.value) {
-            matchingControl.setErrors({ mustMatch: true });
-        } else {
-            matchingControl.setErrors(null);
-        }
+      // set error on matchingControl if validation fails
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ mustMatch: true });
+      } else {
+        matchingControl.setErrors(null);
+      }
     }
   }
 
@@ -117,7 +117,7 @@ export class SignupComponent implements OnInit {
     this.user.email = this.email.value
     this.user.password = this.password.value
     const signup = await this.usersService.addUser(this.user)
-    
+
     if (signup) {
       this.usersService.getCurrentUser()
       this.error = null
@@ -125,7 +125,7 @@ export class SignupComponent implements OnInit {
     } else {
       this.error = 'Email already in use. Maybe you are already registered'
     }
-    
+
   }
 
 }

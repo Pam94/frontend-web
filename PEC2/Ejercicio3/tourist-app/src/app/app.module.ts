@@ -8,27 +8,25 @@ import { InMemoryDataService } from './shared/services/in-memory-data.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './views/home/home.component';
-import { LoginComponent } from './views/login/login.component';
 import { MessagesComponent } from './shared/components/messages/messages.component';
-import { ActivitiesComponent } from './views/activities/activities.component';
-import { ActivityDetailsComponent } from './views/activity-details/activity-details.component';
-import { SignupComponent } from './views/signup/signup.component';
 import { ProfileComponent } from './views/profile/profile.component';
 import { EducationComponent } from './views/education/education.component';
 import { LanguagesComponent } from './views/languages/languages.component';
 import { FavoritesComponent } from './views/favorites/favorites.component';
 import { MyActivitiesComponent } from './views/my-activities/my-activities.component';
 import { AdminComponent } from './views/admin/admin.component';
+import { LoginModule } from './login/login.module';
+import { StoreModule } from '@ngrx/store';
+import { loginReducer } from './login/login.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
+import { ActivitiesModule } from './activities/activities.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent,
     MessagesComponent,
-    ActivitiesComponent,
-    ActivityDetailsComponent,
-    SignupComponent,
     ProfileComponent,
     EducationComponent,
     LanguagesComponent,
@@ -40,13 +38,20 @@ import { AdminComponent } from './views/admin/admin.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    LoginModule,
+    ActivitiesModule,
     HttpClientModule,
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
     // Remove it when a real server is ready to receive requests.
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
-    )
+    ),
+    StoreModule.forRoot({ login: loginReducer }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

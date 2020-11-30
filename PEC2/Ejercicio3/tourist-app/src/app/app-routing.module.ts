@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LoginComponent } from './login/components/login/login.component';
+import { SignupComponent } from './login/components/signup/signup.component';
 import { IsCompanyGuard } from './shared/guards/is-company.guard';
 import { LoggedInGuard } from './shared/guards/logged-in.guard';
 import { AdminComponent } from './views/admin/admin.component';
@@ -7,10 +9,8 @@ import { EducationComponent } from './views/education/education.component';
 import { FavoritesComponent } from './views/favorites/favorites.component';
 import { HomeComponent } from './views/home/home.component';
 import { LanguagesComponent } from './views/languages/languages.component';
-import { LoginComponent } from './views/login/login.component';
 import { MyActivitiesComponent } from './views/my-activities/my-activities.component';
 import { ProfileComponent } from './views/profile/profile.component';
-import { SignupComponent } from './views/signup/signup.component';
 
 
 const routes: Routes = [
