@@ -30,9 +30,13 @@ export class UsersService {
     private router: Router) {
   }
 
-  async getUsers(): Promise<User[]> {
+  /*async getUsers(): Promise<User[]> {
     const usersarray = await this.http.get<User[]>(this.usersUrl).toPromise()
     return usersarray
+  }*/
+
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.usersUrl);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
@@ -62,7 +66,7 @@ export class UsersService {
     );
   }
 
-  async login(email: string, password: string): Promise<boolean> {
+  /*async login(email: string, password: string): Promise<boolean> {
     const dbUsers = await this.getUsers()
     const dbUser = dbUsers.find(user => user.email === email)
 
@@ -81,7 +85,12 @@ export class UsersService {
       this.userSubject.next(this.currentUser)
       return false
     }
-  }
+  }*/
+
+  /*login(email: string, password: string): Observable<boolean> {
+    return this.getUsers().pipe();
+  };*/
+
 
   isLoggedIn(): Observable<boolean> {
     return this.logger.asObservable();

@@ -5,7 +5,7 @@ import { UsersService } from 'src/app/shared/services/users.service';
 import { Router } from '@angular/router';
 import { AppState } from 'src/app/app.reducer';
 import { Store } from '@ngrx/store';
-import { logIn } from '../../login.action';
+import { login } from '../../actions';
 
 @Component({
   selector: 'app-login',
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
 
   checkLogin() {
     if (this.loginForm.valid) {
-      this.store.dispatch(logIn({ email: this.email.value, password: this.password.value }));
+      this.store.dispatch(login({ email: this.email.value, password: this.password.value }));
       this.email.reset();
       this.password.reset();
     }

@@ -1,14 +1,37 @@
 import { on, createReducer } from '@ngrx/store';
-import { Activity } from '../shared/models/Activity';
-import { cancellActivity, createActivity, deleteActivity, editActivity, signUpActivity } from './activities.action';
+import { Activity } from 'src/app/shared/models/Activity';
+import { cancellActivity, createActivity, deleteActivity, editActivity, signUpActivity } from '../actions';
 
-export const initialState: Activity[] = [];
+export interface ActivityState {
+    activities: Activity[],
+    loading: boolean,
+    loaded: boolean,
+    errorMessage: string | null
+}
+
+export const initialActivityState: ActivityState = {
+    activities: [],
+    loading: false,
+    loaded: false,
+    errorMessage: null
+}
 
 const _activityReducer = createReducer(
-    initialState,
-    on(createActivity, (state, { name, category, subcategory, price, language, minimumCapacity, limitCapacity }) =>
-        [state, new Activity(name, category, subcategory, price, language, minimumCapacity, limitCapacity)]),
-    on(cancellActivity, (state, { id }) => {
+    initialActivityState,
+    on(createActivity, (state, { name, category, subcategory, price, language, minimumCapacity, limitCapacity }) => ({
+        ...state,
+        loading: false,
+        loaded: false,
+        activities: [...state.activities,
+        new Activity(name,
+            category,
+            subcategory,
+            price,
+            language,
+            minimumCapacity,
+            limitCapacity)]
+    })),
+    /*on(cancellActivity, (state, { id }) => {
         return state.map((activity) => {
             if (activity.id === id) {
                 return {
@@ -20,7 +43,7 @@ const _activityReducer = createReducer(
             }
         });
     }),
-    on(editActivity, (state, { id, newActivity }) => {
+    on(editActivity, (state, { id, newActivityInformation }) => {
         return state.map((activity) => {
             if (activity.id === id) {
                 return {
@@ -44,9 +67,9 @@ const _activityReducer = createReducer(
         });
     }),
     on(deleteActivity, (state, { id }) => state.filter(activity => activity.id !== id)),
-    on(signUpActivity, (state, { activityId, userId }) => {
+    on(signUpActivity, (state, { id, userId }) => {
         return state.map((activity) => {
-            if (activity.id === activityId) {
+            if (activity.id === id) {
                 return {
                     ...activity,
                     userId: userId
@@ -55,7 +78,7 @@ const _activityReducer = createReducer(
                 return activity;
             }
         });
-    })
+    })*/
 );
 
 export function activityReducer(state, action) {

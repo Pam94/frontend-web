@@ -17,10 +17,10 @@ import { MyActivitiesComponent } from './views/my-activities/my-activities.compo
 import { AdminComponent } from './views/admin/admin.component';
 import { LoginModule } from './login/login.module';
 import { StoreModule } from '@ngrx/store';
-import { loginReducer } from './login/login.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { ActivitiesModule } from './activities/activities.module';
+import { appReducers } from './app.reducer';
 
 @NgModule({
   declarations: [
@@ -47,7 +47,7 @@ import { ActivitiesModule } from './activities/activities.module';
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
     ),
-    StoreModule.forRoot({ login: loginReducer }),
+    StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production
