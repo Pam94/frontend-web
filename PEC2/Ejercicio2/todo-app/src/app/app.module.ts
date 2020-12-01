@@ -8,6 +8,8 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { appReducers } from './app.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { EffectsArray } from './todos/effects';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { appReducers } from './app.reducer';
     AppRoutingModule,
     TodoModule,
     StoreModule.forRoot(appReducers),
+    EffectsModule.forRoot(EffectsArray),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production
