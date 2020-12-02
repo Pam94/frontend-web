@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store'
 import { User } from 'src/app/shared/models/User'
-import { UserType } from 'src/app/shared/models/UserType'
 
 /**
  * Acción para realizar una petición de registro de un 
@@ -9,7 +8,7 @@ import { UserType } from 'src/app/shared/models/UserType'
  */
 export const addUser = createAction(
     '[SignUp] Add User',
-    props<{ name: string, surname: string, userType: UserType, email: string, password: string }>()
+    props<{ newUser: User }>()
 )
 
 /**
@@ -18,7 +17,7 @@ export const addUser = createAction(
  */
 export const addUserSuccess = createAction(
     '[SignUp] Add User Success',
-    props<{ newUserInformation: User }>()
+    props<{ newUser: User }>()
 )
 
 /**

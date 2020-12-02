@@ -1,9 +1,11 @@
 import { on, createReducer } from '@ngrx/store';
 import { Activity } from 'src/app/shared/models/Activity';
-import { cancellActivity, createActivity, deleteActivity, editActivity, signUpActivity } from '../actions';
+import { cancellActivity, createActivity, deleteActivity, editActivity, getAllActivities, getAllActivitiesError, getAllActivitiesSuccess, signUpActivity } from '../actions';
 
 export interface ActivityState {
     activities: Activity[],
+    userId: number,
+    ownerId: number,
     loading: boolean,
     loaded: boolean,
     errorMessage: string | null
@@ -11,6 +13,8 @@ export interface ActivityState {
 
 export const initialActivityState: ActivityState = {
     activities: [],
+    userId: 0,
+    ownerId: 0,
     loading: false,
     loaded: false,
     errorMessage: null
@@ -18,10 +22,30 @@ export const initialActivityState: ActivityState = {
 
 const _activityReducer = createReducer(
     initialActivityState,
-    on(createActivity, (state, { name, category, subcategory, price, language, minimumCapacity, limitCapacity }) => ({
+    on(getAllActivities, (state, { userId, ownerId }) => ({
+        ...state,
+        userId,
+        ownerId,
+        loading: true
+    })),
+    on(getAllActivitiesSuccess, (state, { activities }) => ({
+        ...state,
+        loading: false,
+        loaded: true,
+        errorMessage: null,
+        activities: [...activities]
+    })),
+    on(getAllActivitiesError, (state, { payload }) => ({
         ...state,
         loading: false,
         loaded: false,
+        errorMessage: payload
+    })),
+    on(createActivity, (state, { name, category, subcategory, price, language, minimumCapacity, limitCapacity, userId }) => ({
+        ...state,
+        loading: false,
+        loaded: false,
+        userId,
         activities: [...state.activities,
         new Activity(name,
             category,
@@ -29,56 +53,66 @@ const _activityReducer = createReducer(
             price,
             language,
             minimumCapacity,
-            limitCapacity)]
+            limitCapacity,
+            userId)],
+        errorMessage: null
     })),
-    /*on(cancellActivity, (state, { id }) => {
-        return state.map((activity) => {
+    on(cancellActivity, (state, { id }) => ({
+        ...state,
+        loading: false,
+        loaded: false,
+        activities: [...state.activities.map((activity) => {
             if (activity.id === id) {
                 return {
                     ...activity,
                     cancelled: true
-                };
+                }
             } else {
                 return activity;
             }
-        });
-    }),
-    on(editActivity, (state, { id, newActivityInformation }) => {
-        return state.map((activity) => {
+        })],
+        errorMessage: null
+    })),
+    on(editActivity, (state, { id, newInfo }) => ({
+        ...state,
+        loading: false,
+        loaded: false,
+        errorMessage: null,
+        activities: [...state.activities.map((activity) => {
             if (activity.id === id) {
                 return {
                     ...activity,
-                    name: newActivity.name,
-                    category: newActivity.category,
-                    subcategory: newActivity.subcategory,
-                    price: newActivity.price,
-                    language: newActivity.language,
-                    minimumCapacity: newActivity.minimumCapacity,
-                    limitCapacity: newActivity.limitCapacity,
-                    userId: newActivity.userId,
-                    cancelled: newActivity.cancelled,
-                    date: newActivity.date,
-                    description: newActivity.description
-
-                };
+                    newInfo
+                }
             } else {
                 return activity;
             }
-        });
-    }),
-    on(deleteActivity, (state, { id }) => state.filter(activity => activity.id !== id)),
-    on(signUpActivity, (state, { id, userId }) => {
-        return state.map((activity) => {
+        })]
+    })),
+    on(deleteActivity, (state, { id }) => ({
+        ...state,
+        loading: false,
+        loaded: false,
+        errorMessage: null,
+        activities: [...state.activities.filter((activity) => activity.id !== id)]
+    })),
+    on(signUpActivity, (state, { id, userId }) => ({
+        ...state,
+        loading: false,
+        loaded: false,
+        userId,
+        errorMessage: null,
+        activities: [...state.activities.map((activity) => {
             if (activity.id === id) {
                 return {
                     ...activity,
-                    userId: userId
-                };
+                    userId
+                }
             } else {
                 return activity;
             }
-        });
-    })*/
+        })]
+    }))
 );
 
 export function activityReducer(state, action) {

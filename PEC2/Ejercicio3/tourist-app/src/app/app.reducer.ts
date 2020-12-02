@@ -1,13 +1,15 @@
 import { ActionReducerMap } from '@ngrx/store';
-import * as reducers from './login/reducers';
+import * as loginReducers from './login/reducers';
+import * as activityReducers from './activities/reducers'
 
 export interface AppState {
-    login: reducers.LoginState,
-    users: reducers.UsersState,
-    //activities: Activity[]
+    login: loginReducers.LoginState,
+    users: loginReducers.UsersState,
+    activities: activityReducers.ActivityState
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
-    login: reducers.loginReducer,
-    users: reducers.signUpReducer
+    login: loginReducers.loginReducer,
+    users: loginReducers.signUpReducer,
+    activities: activityReducers.activityReducer
 }

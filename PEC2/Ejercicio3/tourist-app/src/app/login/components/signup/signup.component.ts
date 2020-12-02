@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { generateMockUser, User } from 'src/app/shared/models/User';
 import { UserType } from 'src/app/shared/models/UserType';
 import { UsersService } from 'src/app/shared/services/users.service';
+import { addUser } from '../../actions';
 
 @Component({
   selector: 'app-signup',
@@ -28,7 +31,7 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private usersService: UsersService,
+    private store: Store,
     private router: Router
   ) {
     this.keys = Object.keys(this.types).filter(k => !isNaN(Number(k)));
@@ -110,7 +113,9 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  public async joinNow(): Promise<void> {
+  public joinNow(): void { }
+
+  /*public async joinNow(): Promise<void> {
     this.user.name = this.name.value
     this.user.surname = this.surname.value
     this.user.type = this.type.value
@@ -126,6 +131,24 @@ export class SignupComponent implements OnInit {
       this.error = 'Email already in use. Maybe you are already registered'
     }
 
-  }
+  }*/
+
+  /*signUp(): Observable<User> {
+    this.user.name = this.name.value
+    this.user.surname = this.surname.value
+    this.user.type = this.type.value
+    this.user.email = this.email.value
+    this.user.password = this.password.value
+
+    this.store.dispatch(addUser(
+      {
+        name: this.user.name,
+        surname: this.user.surname,
+        userType: this.user.type,
+        email: this.user.email,
+        password: this.user.password
+      }
+    ));
+  }*/
 
 }

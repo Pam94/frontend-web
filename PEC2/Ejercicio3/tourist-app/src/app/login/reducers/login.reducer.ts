@@ -16,14 +16,13 @@ export const initialLoginState: LoginState = {
 
 const _loginReducer = createReducer(
     initialLoginState,
-    on(logInSucess, (state, { user }) => {
-        return {
-            ...state,
-            isLoggedIn: true,
-            user: user,
-            errorMessage: null
-        }
-    }),
+    on(logInSucess, (state, { user }) => ({
+        ...state,
+        isLoggedIn: true,
+        user: user,
+        errorMessage: null
+
+    })),
     on(logInError, (state, { payload }) => {
         return {
             ...state,

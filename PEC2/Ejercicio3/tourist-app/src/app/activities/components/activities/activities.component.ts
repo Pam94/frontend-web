@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { generate } from 'rxjs';
 import { AppState } from 'src/app/app.reducer';
 import { Activity, generateMockActivity } from 'src/app/shared/models/Activity';
-import { ActivitiesService } from 'src/app/shared/services/activities.service';
+import { getAllActivities } from '../../actions';
 
 @Component({
   selector: 'app-activities',
@@ -20,31 +19,23 @@ export class ActivitiesComponent implements OnInit {
 
   @Input() ownerId: number
 
-
-
-
-  constructor(
-    private activitiesService: ActivitiesService,
-    private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
+    this.store.select('activities').subscribe(activitiesResponse => this.activities = activitiesResponse.activities);
+
     this.getActivities();
-    this.store.select('activities').subscribe(activities => this.activities = activities);
   }
 
   getActivities() {
-    return this.activitiesService.getActivities().subscribe(async activities => {
-      if (this.userId) {
-        const myActivities = await this.activitiesService.getMyActivities(this.userId).toPromise()
-        const myActivitiesArray = myActivities.map(act => act.activityId)
-        this.activities = activities.filter(act => myActivitiesArray.includes(act.id))
-      } else if (this.ownerId) {
-        const ownerActivities = activities.filter(act => act.userId == this.ownerId)
-        this.activities = ownerActivities
-      } else {
-        this.activities = activities
-      }
-    })
+    if (this.userId) {
+      this.store.dispatch(getAllActivities({ userId: this.userId, ownerId: null }));
+    } else if (this.ownerId) {
+      this.store.dispatch(getAllActivities({ userId: null, ownerId: this.ownerId }));
+    } else {
+      this.store.dispatch(getAllActivities({ userId: null, ownerId: null }));
+    }
+
   }
 
   onSelected(activity: Activity) {

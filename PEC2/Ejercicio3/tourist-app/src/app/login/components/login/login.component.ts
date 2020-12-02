@@ -23,8 +23,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private usersService: UsersService,
-    private router: Router,
     private store: Store<AppState>) { }
 
   ngOnInit(): void {
@@ -61,11 +59,15 @@ export class LoginComponent implements OnInit {
   }*/
 
   checkLogin() {
-    if (this.loginForm.valid) {
-      this.store.dispatch(login({ email: this.email.value, password: this.password.value }));
-      this.email.reset();
-      this.password.reset();
-    }
+
+    this.store.dispatch(
+      login({ email: this.email.value, password: this.password.value }));
+
+    this.user.email = this.email.value
+    this.user.password = this.password.value
+    this.email.reset();
+    this.password.reset();
+
   }
 
 }

@@ -7,7 +7,7 @@ import { User } from 'src/app/shared/models/User';
 import { ActivitiesService } from 'src/app/shared/services/activities.service';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { UsersService } from 'src/app/shared/services/users.service';
-import { createActivity } from '../../actions';
+import { cancellActivity, createActivity, editActivity, signUpActivity } from '../../actions';
 
 @Component({
   selector: 'app-activity-details',
@@ -182,9 +182,9 @@ export class ActivityDetailsComponent implements OnInit {
 
     if (!this.activityForm.invalid) {
       if (this.id) {
-        /*this.store.dispatch(
-          editActivity({ id: this.activity.id, newActivityInformation: this.activity })
-        );*/
+        this.store.dispatch(
+          editActivity({ id: this.activity.id, newInfo: this.activity })
+        );
       } else {
         this.store.dispatch(
           createActivity({
@@ -295,7 +295,7 @@ export class ActivityDetailsComponent implements OnInit {
   }*/
 
   cancel() {
-    //this.store.dispatch(cancellActivity({ id: this.activity.id }));
+    this.store.dispatch(cancellActivity({ id: this.activity.id }));
   }
 
   /*signup() {
@@ -306,7 +306,7 @@ export class ActivityDetailsComponent implements OnInit {
   }*/
 
   signup() {
-    /*this.store.dispatch(signUpActivity({ activityId: this.id, userId: this.activity.userId }));*/
+    this.store.dispatch(signUpActivity({ id: this.id, userId: this.activity.userId }));
   }
 
   toggleFavorite() {

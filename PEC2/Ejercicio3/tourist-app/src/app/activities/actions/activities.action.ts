@@ -1,6 +1,25 @@
 import { createAction, props } from '@ngrx/store';
 import { Activity } from 'src/app/shared/models/Activity';
 
+
+/**
+ * Get All Activities
+ */
+export const getAllActivities = createAction(
+    '[Activity] Get All Activities',
+    props<{ userId: number, ownerId: number }>()
+);
+
+export const getAllActivitiesSuccess = createAction(
+    '[Activity] Get All Activities Success',
+    props<{ activities: Activity[] }>()
+);
+
+export const getAllActivitiesError = createAction(
+    '[Activity] Get All Activities Error',
+    props<{ payload: any }>()
+)
+
 /**
  * Create Activity
  */
@@ -8,14 +27,6 @@ export const createActivity = createAction(
     '[Activity] Create Activity',
     props<{ name: string, category: string, subcategory: string, price: number, language: string, minimumCapacity: number, limitCapacity: number, userId: number }>()
 );
-
-/*export const createActivitySuccess = createAction(
-    '[Activity] Create Activity Sucess',
-    props<{ activity: Activity }>());
-
-export const createActivityError = createAction(
-    '[Activity] Create Activity Error',
-    props<{ payload: any }>());*/
 
 /**
  * Cancel Activity

@@ -7,12 +7,12 @@ export class Activity {
   language: string
   minimumCapacity: number
   limitCapacity: number
-  userId?: number
+  userId: number
   cancelled?: boolean
   date?: Date
   description?: string
 
-  constructor(name: string, category: string, subcategory: string, price: number, language: string, minimumCapacity: number, limitCapacity: number) {
+  constructor(name: string, category: string, subcategory: string, price: number, language: string, minimumCapacity: number, limitCapacity: number, userId: number) {
     this.name = name;
     this.category = category;
     this.subcategory = subcategory;
@@ -20,18 +20,20 @@ export class Activity {
     this.language = language;
     this.minimumCapacity = minimumCapacity;
     this.limitCapacity = limitCapacity;
+    this.userId = userId;
   }
 }
 
 export function generateMockActivity(): Activity {
   return {
-    id: 1,
-    name: 'Actividad',
-    category: 'Playa',
-    subcategory: 'Submarinismo',
+    id: 0,
+    name: '',
+    category: '',
+    subcategory: '',
     price: 50,
-    language: 'Castellano',
+    language: '',
     minimumCapacity: 5,
-    limitCapacity: 15
+    limitCapacity: 15,
+    userId: 0
   }
 }

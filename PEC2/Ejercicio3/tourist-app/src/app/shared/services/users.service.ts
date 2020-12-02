@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, map, tap, find } from 'rxjs/operators';
+import { catchError, map, tap, find, filter, take, toArray, mergeMap, reduce } from 'rxjs/operators';
 import { MessageService } from './message.service';
-import { Observable, of, Subject, from } from 'rxjs';
+import { Observable, of, Subject, from, throwError } from 'rxjs';
 import { User } from '../models/User';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
@@ -87,10 +87,37 @@ export class UsersService {
     }
   }*/
 
-  /*login(email: string, password: string): Observable<boolean> {
-    return this.getUsers().pipe();
-  };*/
+  login(email: string, password: string): Observable<any> {
+    return this.getUsers().pipe(
+      map(users => {
+        const user = users.find(user =>
+          user.email === email && user.password === password);
 
+        if (user) {
+          this.storageService.addItem('user', user);
+          this.loggedIn = true;
+          this.currentUser = user;
+          this.logger.next(this.loggedIn);
+          this.userSubject.next(this.currentUser);
+
+          this.getCurrentUser();
+          this.router.navigate(['/']);
+
+          return user;
+
+        } else {
+
+          this.loggedIn = false;
+          this.currentUser = null;
+          this.logger.next(this.loggedIn);
+          this.userSubject.next(this.currentUser);
+
+          return throwError(new Error('Wrong email or password'));
+          // TODO siempre pasa por LoginSuccess
+        }
+
+      }));
+  };
 
   isLoggedIn(): Observable<boolean> {
     return this.logger.asObservable();
@@ -109,29 +136,52 @@ export class UsersService {
     this.router.navigate(['/'])
   }
 
-  async addUser(user: User): Promise<User> {
+  /*async addUser(user: User): Promise<User> {
     const users = await this.getUsers()
     const userExists = users.find(u => u.email == user.email)
-
+  
     if (userExists) return null
-
+  
     const newUser = await this.http.post<User>(this.usersUrl, user, this.httpOptions).toPromise()
-
+  
     if (newUser) {
       this.storageService.addItem('user', newUser)
       this.loggedIn = true;
       this.logger.next(this.loggedIn)
       this.currentUser = newUser
       this.userSubject.next(this.currentUser)
-
+  
       // console.log('new user', newUser)
       return newUser
-
+  
     } else {
       catchError(this.handleError<User>('addUser'))
       return null
     }
-  }
+  }*/
+
+  /*addUser(user: User): Observable<User> {
+    return this.getUsers().pipe(
+      map(users => {
+        const user = users.find(user =>
+          user.id === user.id);
+
+        if (user) return throwError(new Error("User already exists"));
+
+        return this.http.post<User>(this.usersUrl, user, this.httpOptions).pipe(
+          tap(newUser => {
+            if (newUser) {
+              this.storageService.addItem('user', newUser);
+              this.loggedIn = true;
+              this.logger.next(this.loggedIn);
+              this.currentUser = newUser;
+              this.userSubject.next(this.currentUser);
+            }
+          }),
+          catchError(this.handleError<User>('addUser')));
+      })
+    );
+  }*/
 
   deleteUser(user: User | number): Observable<User> {
     const id = typeof user === 'number' ? user : user.id;
@@ -186,8 +236,8 @@ export class UsersService {
     const url = `api/educations/${id}`;
 
     return this.http.delete<Education>(url, this.httpOptions).pipe(
-      // tap(_ => this.log(`deleted Education id=${id}`)),
-      // catchError(this.handleError<Education>('deleteEducation'))
+      tap(_ => this.log(`deleted Education id=${id}`)),
+      catchError(this.handleError<Education>('deleteEducation'))
     );
   }
 
