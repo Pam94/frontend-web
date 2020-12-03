@@ -1,6 +1,6 @@
 import { on, createReducer } from '@ngrx/store';
 import { Activity } from 'src/app/shared/models/Activity';
-import { cancellActivity, createActivity, deleteActivity, editActivity, getAllActivities, getAllActivitiesError, getAllActivitiesSuccess, signUpActivity } from '../actions';
+import { cancellActivity, createActivity, deleteActivity, editActivity, getAdminActivities, getAdminActivitiesError, getAdminActivitiesSuccess, getAllActivities, getAllActivitiesError, getAllActivitiesSuccess, getMyActivities, getMyActivitiesError, getMyActivitiesSuccess, signUpActivity } from '../actions';
 
 export interface ActivityState {
     activities: Activity[],
@@ -22,10 +22,8 @@ export const initialActivityState: ActivityState = {
 
 const _activityReducer = createReducer(
     initialActivityState,
-    on(getAllActivities, (state, { userId, ownerId }) => ({
+    on(getAllActivities, state => ({
         ...state,
-        userId,
-        ownerId,
         loading: true
     })),
     on(getAllActivitiesSuccess, (state, { activities }) => ({
@@ -41,11 +39,46 @@ const _activityReducer = createReducer(
         loaded: false,
         errorMessage: payload
     })),
+    on(getAdminActivities, (state, { ownerId }) => ({
+        ...state,
+        loading: true,
+        ownerId: ownerId
+    })),
+    on(getAdminActivitiesSuccess, (state, { activities }) => ({
+        ...state,
+        loading: false,
+        loaded: true,
+        errorMessage: null,
+        activities: [...activities]
+    })),
+    on(getAdminActivitiesError, (state, { payload }) => ({
+        ...state,
+        loading: false,
+        loaded: false,
+        errorMessage: payload
+    })),
+    on(getMyActivities, (state, { userId }) => ({
+        ...state,
+        loading: true,
+        userId: userId
+    })),
+    on(getMyActivitiesSuccess, (state, { activities }) => ({
+        ...state,
+        loading: false,
+        loaded: true,
+        errorMessage: null,
+        activities: [...activities]
+    })),
+    on(getMyActivitiesError, (state, { payload }) => ({
+        ...state,
+        loading: false,
+        loaded: false,
+        errorMessage: payload
+    })),
     on(createActivity, (state, { name, category, subcategory, price, language, minimumCapacity, limitCapacity, userId }) => ({
         ...state,
         loading: false,
         loaded: false,
-        userId,
         activities: [...state.activities,
         new Activity(name,
             category,

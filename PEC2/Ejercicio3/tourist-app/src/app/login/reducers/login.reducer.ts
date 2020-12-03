@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { User } from 'src/app/shared/models/User';
-import { logInError, logInSucess, logOut } from '../actions';
+import { login, logInError, logInSucess, logOut } from '../actions';
 
 export interface LoginState {
     isLoggedIn: boolean;
@@ -23,14 +23,13 @@ const _loginReducer = createReducer(
         errorMessage: null
 
     })),
-    on(logInError, (state, { payload }) => {
-        return {
-            ...state,
-            isLoggedIn: false,
-            user: null,
-            errorMessage: payload
-        }
-    }),
+    on(logInError, (state, { payload }) => ({
+        ...state,
+        isLoggedIn: false,
+        user: null,
+        errorMessage: payload
+    })
+    ),
     on(logOut, () => initialLoginState)
 );
 

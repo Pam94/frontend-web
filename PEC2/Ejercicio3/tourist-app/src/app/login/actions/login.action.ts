@@ -40,3 +40,7 @@ export const logInError = createAction(
 export const logOut = createAction(
     '[Login] LogOut'
 )
+
+export const logOutSuccess = createAction(
+    '[Login] LogOut Success'
+)

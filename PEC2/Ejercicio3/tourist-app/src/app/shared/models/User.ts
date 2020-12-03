@@ -1,4 +1,3 @@
-import { Activity } from './Activity';
 import { UserType } from './UserType'
 
 export class User {
@@ -28,11 +27,11 @@ export class User {
 
 export function generateMockUser(): User {
   return {
-    id: 1,
-    name: 'Nombre',
-    surname: 'Apellido',
-    email: 'nombre@gmail.com',
-    password: 'password',
+    id: 0,
+    name: '',
+    surname: '',
+    email: '',
+    password: '',
     type: UserType.TOURIST,
   }
 }

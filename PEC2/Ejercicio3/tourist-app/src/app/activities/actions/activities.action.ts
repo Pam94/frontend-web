@@ -6,8 +6,7 @@ import { Activity } from 'src/app/shared/models/Activity';
  * Get All Activities
  */
 export const getAllActivities = createAction(
-    '[Activity] Get All Activities',
-    props<{ userId: number, ownerId: number }>()
+    '[Activity] Get All Activities'
 );
 
 export const getAllActivitiesSuccess = createAction(
@@ -16,6 +15,42 @@ export const getAllActivitiesSuccess = createAction(
 );
 
 export const getAllActivitiesError = createAction(
+    '[Activity] Get All Activities Error',
+    props<{ payload: any }>()
+)
+
+/**
+ * Get Admin Activities
+ */
+export const getAdminActivities = createAction(
+    '[Activity] Get All Activities',
+    props<{ ownerId: number }>()
+);
+
+export const getAdminActivitiesSuccess = createAction(
+    '[Activity] Get All Activities Success',
+    props<{ activities: Activity[] }>()
+);
+
+export const getAdminActivitiesError = createAction(
+    '[Activity] Get All Activities Error',
+    props<{ payload: any }>()
+)
+
+/**
+ * Get My Activities
+ */
+export const getMyActivities = createAction(
+    '[Activity] Get All Activities',
+    props<{ userId: number }>()
+);
+
+export const getMyActivitiesSuccess = createAction(
+    '[Activity] Get All Activities Success',
+    props<{ activities: Activity[] }>()
+);
+
+export const getMyActivitiesError = createAction(
     '[Activity] Get All Activities Error',
     props<{ payload: any }>()
 )

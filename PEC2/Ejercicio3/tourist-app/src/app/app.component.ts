@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
-import { tap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { AppState } from './app.reducer';
+import { logOut } from './login/actions';
 import { User } from './shared/models/User';
-import { StorageService } from './shared/services/storage.service';
-import { UsersService } from './shared/services/users.service';
 
 @Component({
   selector: 'app-root',
@@ -11,22 +10,23 @@ import { UsersService } from './shared/services/users.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public title = 'Tourist app';
-  public user: User = this.storageService.getItem('user')
+  public title = 'Tourist app'
+  public user: User
   public isLoggedIn = false
 
-  constructor(private usersService: UsersService, private storageService: StorageService){}
-
-  ngOnInit(): void{
-    this.getCurrentUser()
-    this.usersService.isLoggedIn().subscribe(res => this.isLoggedIn = res)
+  constructor(private store: Store<AppState>) {
   }
 
-  getCurrentUser(){
-    this.usersService.getCurrentUser().subscribe(user => this.user = user)
+  ngOnInit(): void {
+    this.getCurrentUser();
+    this.store.select('login').subscribe(loginResponse => this.isLoggedIn = loginResponse.isLoggedIn);
   }
 
-  logout(){
-    this.usersService.logout()
+  getCurrentUser() {
+    this.store.select('login').subscribe(loginResponse => this.user = loginResponse.user);
+  }
+
+  logout() {
+    this.store.dispatch(logOut());
   }
 }

@@ -8,16 +8,17 @@ import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 import { Education } from '../models/Education';
 import { UserLanguage } from '../models/UserLanguage';
+import { logInError } from 'src/app/login/actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
   private usersUrl = 'api/users'
-  private loggedIn = false
+  public loggedIn = false
   public currentUser: User = this.storageService.getItem('user')
-  private logger = new Subject<boolean>()
-  private userSubject = new Subject<User>()
+  public logger = new Subject<boolean>()
+  public userSubject = new Subject<User>()
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -27,7 +28,7 @@ export class UsersService {
     private http: HttpClient,
     private messageService: MessageService,
     private storageService: StorageService,
-    private router: Router) {
+    public router: Router) {
   }
 
   /*async getUsers(): Promise<User[]> {
@@ -87,37 +88,11 @@ export class UsersService {
     }
   }*/
 
-  login(email: string, password: string): Observable<any> {
+  login(email: string, password: string): Observable<User> {
     return this.getUsers().pipe(
-      map(users => {
-        const user = users.find(user =>
-          user.email === email && user.password === password);
-
-        if (user) {
-          this.storageService.addItem('user', user);
-          this.loggedIn = true;
-          this.currentUser = user;
-          this.logger.next(this.loggedIn);
-          this.userSubject.next(this.currentUser);
-
-          this.getCurrentUser();
-          this.router.navigate(['/']);
-
-          return user;
-
-        } else {
-
-          this.loggedIn = false;
-          this.currentUser = null;
-          this.logger.next(this.loggedIn);
-          this.userSubject.next(this.currentUser);
-
-          return throwError(new Error('Wrong email or password'));
-          // TODO siempre pasa por LoginSuccess
-        }
-
-      }));
-  };
+      map((users) => users.find(user =>
+        user.email === email && user.password === password)));
+  }
 
   isLoggedIn(): Observable<boolean> {
     return this.logger.asObservable();
@@ -128,7 +103,7 @@ export class UsersService {
   }
 
   logout() {
-    this.storageService.removeItem('user')
+    //this.storageService.removeItem('user')
     this.loggedIn = false
     this.currentUser = null
     this.logger.next(this.loggedIn)
@@ -139,49 +114,38 @@ export class UsersService {
   /*async addUser(user: User): Promise<User> {
     const users = await this.getUsers()
     const userExists = users.find(u => u.email == user.email)
-  
+   
     if (userExists) return null
-  
+   
     const newUser = await this.http.post<User>(this.usersUrl, user, this.httpOptions).toPromise()
-  
+   
     if (newUser) {
       this.storageService.addItem('user', newUser)
       this.loggedIn = true;
       this.logger.next(this.loggedIn)
       this.currentUser = newUser
       this.userSubject.next(this.currentUser)
-  
+   
       // console.log('new user', newUser)
       return newUser
-  
+   
     } else {
       catchError(this.handleError<User>('addUser'))
       return null
     }
   }*/
 
-  /*addUser(user: User): Observable<User> {
-    return this.getUsers().pipe(
-      map(users => {
-        const user = users.find(user =>
-          user.id === user.id);
+  addUser(user: User): Observable<User> {
 
-        if (user) return throwError(new Error("User already exists"));
-
-        return this.http.post<User>(this.usersUrl, user, this.httpOptions).pipe(
-          tap(newUser => {
-            if (newUser) {
-              this.storageService.addItem('user', newUser);
-              this.loggedIn = true;
-              this.logger.next(this.loggedIn);
-              this.currentUser = newUser;
-              this.userSubject.next(this.currentUser);
-            }
-          }),
-          catchError(this.handleError<User>('addUser')));
+    return this.http.post<User>(this.usersUrl, user, this.httpOptions);
+    /*this.getUser(user.id).pipe(
+      map((user) => {
+        if (!user) {
+          return this.http.post<User>(this.usersUrl, user, this.httpOptions);
+        }
       })
-    );
-  }*/
+    );*/
+  }
 
   deleteUser(user: User | number): Observable<User> {
     const id = typeof user === 'number' ? user : user.id;

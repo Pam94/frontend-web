@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { Activity, generateMockActivity } from 'src/app/shared/models/Activity';
-import { getAllActivities } from '../../actions';
+import { getAdminActivities, getAllActivities, getMyActivities } from '../../actions';
 
 @Component({
   selector: 'app-activities',
@@ -28,12 +28,13 @@ export class ActivitiesComponent implements OnInit {
   }
 
   getActivities() {
-    if (this.userId) {
-      this.store.dispatch(getAllActivities({ userId: this.userId, ownerId: null }));
-    } else if (this.ownerId) {
-      this.store.dispatch(getAllActivities({ userId: null, ownerId: this.ownerId }));
+
+    if (this.userId > 0) {
+      this.store.dispatch(getMyActivities({ userId: this.userId }));
+    } else if (this.ownerId > 0) {
+      this.store.dispatch(getAdminActivities({ ownerId: this.ownerId }));
     } else {
-      this.store.dispatch(getAllActivities({ userId: null, ownerId: null }));
+      this.store.dispatch(getAllActivities());
     }
 
   }

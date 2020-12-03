@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { generateMockUser, User } from 'src/app/shared/models/User';
-import { UsersService } from 'src/app/shared/services/users.service';
-import { Router } from '@angular/router';
 import { AppState } from 'src/app/app.reducer';
 import { Store } from '@ngrx/store';
 import { login } from '../../actions';

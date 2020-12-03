@@ -22,7 +22,7 @@ import { environment } from 'src/environments/environment';
 import { ActivitiesModule } from './activities/activities.module';
 import { appReducers } from './app.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { EffectsArray } from './login/effects';
+import { EffectsArray } from './app.effects';
 
 @NgModule({
   declarations: [
