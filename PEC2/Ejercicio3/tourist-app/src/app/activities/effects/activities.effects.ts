@@ -28,7 +28,7 @@ export class ActivitiesEffects {
             ofType(getAdminActivities),
             switchMap((action) =>
                 this.activityService.getActivities().pipe(
-                    map((activities) => getAdminActivitiesSuccess({ activities: activities.filter(act => act.id === action.ownerId) })),
+                    map((activities) => getAdminActivitiesSuccess({ activities: activities.filter(act => act.userId === action.ownerId) })),
                     catchError((err) => of(getAdminActivitiesError({ payload: err })))
                 ))
         )

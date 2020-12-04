@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { getAllActivities } from './activities/actions';
 import { AppState } from './app.reducer';
 import { logOut } from './login/actions';
 import { User } from './shared/models/User';
@@ -14,8 +15,7 @@ export class AppComponent {
   public user: User
   public isLoggedIn = false
 
-  constructor(private store: Store<AppState>) {
-  }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.getCurrentUser();
@@ -28,5 +28,6 @@ export class AppComponent {
 
   logout() {
     this.store.dispatch(logOut());
+    this.store.dispatch(getAllActivities());
   }
 }

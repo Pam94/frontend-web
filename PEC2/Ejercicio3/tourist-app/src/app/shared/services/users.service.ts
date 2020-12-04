@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, map, tap, find, filter, take, toArray, mergeMap, reduce } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, map, tap } from 'rxjs/operators';
 import { MessageService } from './message.service';
-import { Observable, of, Subject, from, throwError } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { User } from '../models/User';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 import { Education } from '../models/Education';
 import { UserLanguage } from '../models/UserLanguage';
-import { logInError } from 'src/app/login/actions';
 
 @Injectable({
   providedIn: 'root'

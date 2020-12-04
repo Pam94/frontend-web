@@ -23,17 +23,17 @@ export const getAllActivitiesError = createAction(
  * Get Admin Activities
  */
 export const getAdminActivities = createAction(
-    '[Activity] Get All Activities',
+    '[Activity] Get Admin Activities',
     props<{ ownerId: number }>()
 );
 
 export const getAdminActivitiesSuccess = createAction(
-    '[Activity] Get All Activities Success',
+    '[Activity] Get Admin Activities Success',
     props<{ activities: Activity[] }>()
 );
 
 export const getAdminActivitiesError = createAction(
-    '[Activity] Get All Activities Error',
+    '[Activity] Get Admin Activities Error',
     props<{ payload: any }>()
 )
 
@@ -41,17 +41,17 @@ export const getAdminActivitiesError = createAction(
  * Get My Activities
  */
 export const getMyActivities = createAction(
-    '[Activity] Get All Activities',
+    '[Activity] Get My Activities',
     props<{ userId: number }>()
 );
 
 export const getMyActivitiesSuccess = createAction(
-    '[Activity] Get All Activities Success',
+    '[Activity] Get My Activities Success',
     props<{ activities: Activity[] }>()
 );
 
 export const getMyActivitiesError = createAction(
-    '[Activity] Get All Activities Error',
+    '[Activity] Get My Activities Error',
     props<{ payload: any }>()
 )
 
