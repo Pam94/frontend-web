@@ -1,4 +1,4 @@
 import { ActivitiesEffects } from './activities/effects/activities.effects';
-import { LoginEffects } from './login/effects/login.effects';
+import { LoginEffectsArray } from './login/effects';
 
-export const EffectsArray: any[] = [LoginEffects, ActivitiesEffects];
+export const EffectsArray: any[] = [LoginEffectsArray, ActivitiesEffects];
