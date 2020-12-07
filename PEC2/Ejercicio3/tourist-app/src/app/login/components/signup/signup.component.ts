@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { generateMockUser, User } from 'src/app/shared/models/User';
+import { User } from 'src/app/shared/models/User';
 import { UserType } from 'src/app/shared/models/UserType';
 import { addUser } from '../../actions';
 
@@ -13,7 +12,6 @@ import { addUser } from '../../actions';
 })
 export class SignupComponent implements OnInit {
 
-  public user: User = generateMockUser();
   public name: FormControl
   public surname: FormControl
   public type: FormControl
@@ -29,8 +27,7 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store,
-    private router: Router
+    private store: Store
   ) {
     this.keys = Object.keys(this.types).filter(k => !isNaN(Number(k)));
   }
@@ -130,13 +127,16 @@ export class SignupComponent implements OnInit {
   }*/
 
   joinNow(): void {
-    this.user.name = this.name.value
-    this.user.surname = this.surname.value
-    this.user.type = this.type.value
-    this.user.email = this.email.value
-    this.user.password = this.password.value
 
-    this.store.dispatch(addUser({ newUser: this.user }));
+    const newUser = new User(
+      this.name.value,
+      this.surname.value,
+      this.type.value,
+      this.email.value,
+      this.password.value
+    );
+
+    this.store.dispatch(addUser({ newUser: newUser }));
   }
 
 }

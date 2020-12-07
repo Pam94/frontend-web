@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getAdminActivities, getAllActivities } from 'src/app/activities/actions';
 import { AppState } from 'src/app/app.reducer';
-import { UsersService } from 'src/app/shared/services/users.service';
 
 @Component({
   selector: 'app-admin',
@@ -11,17 +9,13 @@ import { UsersService } from 'src/app/shared/services/users.service';
 })
 export class AdminComponent implements OnInit {
 
-  public ownerId: number = this.userService.currentUser.id
+  public ownerId: number;
 
-  constructor(private store: Store<AppState>,
-    private userService: UsersService) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    /*this.store.select('activities').subscribe(ownerResponse =>
-      this.ownerId = ownerResponse.ownerId);*/
-
-    //this.store.dispatch(getAdminActivities({ ownerId: this.ownerId }));
+    this.store.select('activities').subscribe(ownerResponse =>
+      this.ownerId = ownerResponse.ownerId);
   }
-
 
 }

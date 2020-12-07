@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { ActivitiesService } from 'src/app/shared/services/activities.service';
-import { getAdminActivities, getAdminActivitiesError, getAdminActivitiesSuccess, getAllActivities, getAllActivitiesError, getAllActivitiesSuccess, getMyActivities, getMyActivitiesError, getMyActivitiesSuccess } from '../actions';
+import { getAdminActivities, getAdminActivitiesError, getAdminActivitiesSuccess, getAllActivities, getAllActivitiesError, getAllActivitiesSuccess, getMyActivities, getMyActivitiesError, getMyActivitiesSuccess, getPeopleRegistered, getPeopleRegisteredError, getPeopleRegisteredSuccess, getSignedUpActivities, getSignedUpActivitiesError, getSignedUpActivitiesSuccess } from '../actions';
 
 @Injectable()
 export class ActivitiesEffects {
@@ -41,9 +41,10 @@ export class ActivitiesEffects {
                 this.activityService.getActivities().pipe(
                     mergeMap((activities) =>
                         this.activityService.getMyActivities(action.userId).pipe(
-                            map(userActivities => userActivities.map(act => act.activityId)),
+                            map(myactivities => myactivities.map(act => act.activityId)),
                             map(array => activities.filter(act => array.includes(act.id))),
-                            map((myActivities) => getMyActivitiesSuccess({ activities: myActivities })),
+                            map((signUpActivities) =>
+                                getMyActivitiesSuccess({ activities: signUpActivities })),
                             catchError((err) => of(getMyActivitiesError({ payload: err })))
                         )
                     ),
@@ -52,4 +53,35 @@ export class ActivitiesEffects {
             )
         )
     );
+
+    getSignedUpActivities$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(getSignedUpActivities),
+            switchMap((action) =>
+                this.activityService.getMyActivities(action.userId).pipe(
+                    map((myactivities) =>
+                        getSignedUpActivitiesSuccess({ myactivities: myactivities })),
+                    catchError((err) =>
+                        of(getSignedUpActivitiesError({ payload: err })
+                        )
+                    )
+                )
+            )
+        ));
+
+    getPeopleRegistered$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(getPeopleRegistered),
+            switchMap((action) =>
+                this.activityService.getPeopleOnActivity(action.activityId).pipe(
+                    map((myActivities) =>
+                        getPeopleRegisteredSuccess({ peopleRegistered: myActivities.length })
+                    ),
+                    catchError((err) =>
+                        of(getPeopleRegisteredError({ payload: err }))
+                    )
+                )
+            )
+        )
+    )
 }

@@ -4,7 +4,6 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { MessageService } from './message.service';
 import { Observable, of, Subject } from 'rxjs';
 import { User } from '../models/User';
-import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 import { Education } from '../models/Education';
 import { UserLanguage } from '../models/UserLanguage';
@@ -15,7 +14,7 @@ import { UserLanguage } from '../models/UserLanguage';
 export class UsersService {
   private usersUrl = 'api/users'
   public loggedIn = false
-  public currentUser: User = this.storageService.getItem('user')
+  public currentUser: User //= this.storageService.getItem('user')
   public logger = new Subject<boolean>()
   public userSubject = new Subject<User>()
 
@@ -26,7 +25,7 @@ export class UsersService {
   constructor(
     private http: HttpClient,
     private messageService: MessageService,
-    private storageService: StorageService,
+    //private storageService: StorageService,
     public router: Router) {
   }
 
@@ -134,16 +133,9 @@ export class UsersService {
     }
   }*/
 
-  addUser(user: User): Observable<User> {
-
-    return this.http.post<User>(this.usersUrl, user, this.httpOptions);
-    /*this.getUser(user.id).pipe(
-      map((user) => {
-        if (!user) {
-          return this.http.post<User>(this.usersUrl, user, this.httpOptions);
-        }
-      })
-    );*/
+  addUser(newUser: User): Observable<User> {
+    console.log(newUser);
+    return this.http.post<User>(this.usersUrl, newUser, this.httpOptions);
   }
 
   deleteUser(user: User | number): Observable<User> {
@@ -160,7 +152,7 @@ export class UsersService {
   updateUser(user: User): Observable<any> {
     return this.http.put(this.usersUrl, user, this.httpOptions).pipe(
       tap(_ => {
-        this.storageService.addItem('user', user)
+        //this.storageService.addItem('user', user)
         // console.log(user)
         this.currentUser = user
         this.userSubject.next(this.currentUser)

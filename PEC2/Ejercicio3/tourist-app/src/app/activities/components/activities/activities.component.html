@@ -1,6 +1,6 @@
 <div class="flex justify-between padding">
   <div class="list">
-    <button *ngIf="ownerId" (click)="onSelected(null)">Add activity</button>
+    <button *ngIf="isOwnerLoggedIn" (click)="onSelected(null)">Add activity</button>
     <table>
       <tr>
         <th>ID</th>
@@ -22,7 +22,6 @@
   </div>
 
   <div class="detail" *ngIf="selectedActivity">
-    <app-activity-details [ownerId]="ownerId" (edited)="onEdited()" [id]="selectedActivity && selectedActivity.id ? selectedActivity.id : null"></app-activity-details>
+    <app-activity-details (edited)="onEdited()" [selectedActivity]="selectedActivity"></app-activity-details>
   </div>
 </div>
-

@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Activity } from 'src/app/shared/models/Activity';
+import { MyActivities } from 'src/app/shared/models/MyActivities';
 
 
 /**
@@ -38,7 +39,7 @@ export const getAdminActivitiesError = createAction(
 )
 
 /**
- * Get My Activities
+ * Get My Activities on Activity list
  */
 export const getMyActivities = createAction(
     '[Activity] Get My Activities',
@@ -52,6 +53,24 @@ export const getMyActivitiesSuccess = createAction(
 
 export const getMyActivitiesError = createAction(
     '[Activity] Get My Activities Error',
+    props<{ payload: any }>()
+)
+
+/**
+ * Get My Activities on MyActivity list
+ */
+export const getSignedUpActivities = createAction(
+    '[Activity] Get Signed Up Activities',
+    props<{ userId: number }>()
+);
+
+export const getSignedUpActivitiesSuccess = createAction(
+    '[Activity] Get Signed Up Activities Success',
+    props<{ myactivities: MyActivities[] }>()
+);
+
+export const getSignedUpActivitiesError = createAction(
+    '[Activity] Get Signed Up Activities Error',
     props<{ payload: any }>()
 )
 
@@ -91,5 +110,23 @@ export const deleteActivity = createAction(
  */
 export const signUpActivity = createAction(
     '[Activity] Sign Up Activity',
-    props<{ id: number, userId: number }>()
+    props<{ currentActivity: number, userId: number }>()
+)
+
+/**
+ * Get People Registered
+ */
+export const getPeopleRegistered = createAction(
+    '[Activity] Get People Registered',
+    props<{ activityId: number }>()
+)
+
+export const getPeopleRegisteredSuccess = createAction(
+    '[Activity] Get People Registered Success',
+    props<{ peopleRegistered: number }>()
+)
+
+export const getPeopleRegisteredError = createAction(
+    '[Activity] Get People Registered Error',
+    props<{ payload: string }>()
 )

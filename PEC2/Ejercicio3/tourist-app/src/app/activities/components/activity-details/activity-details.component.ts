@@ -3,10 +3,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { Activity, generateMockActivity } from 'src/app/shared/models/Activity';
+import { MyActivities } from 'src/app/shared/models/MyActivities';
 import { User } from 'src/app/shared/models/User';
-import { ActivitiesService } from 'src/app/shared/services/activities.service';
+import { UserType } from 'src/app/shared/models/UserType';
 import { StorageService } from 'src/app/shared/services/storage.service';
-import { UsersService } from 'src/app/shared/services/users.service';
 import { cancellActivity, createActivity, editActivity, signUpActivity } from '../../actions';
 
 @Component({
@@ -16,11 +16,18 @@ import { cancellActivity, createActivity, editActivity, signUpActivity } from '.
 })
 export class ActivityDetailsComponent implements OnInit {
 
-  @Input() id: number
-  @Input() ownerId: number
+  @Input() selectedActivity: Activity
+  user: User
+
+  myActivities: MyActivities[]
+
+  isTourist: boolean
+  isCompany: boolean
+
+  /*= this.usersService.currentUser && this.usersService.currentUser.type == 0*/
+  /*public isCompany = this.usersService.currentUser && this.usersService.currentUser.type == 1*/
 
   @Output() edited = new EventEmitter<boolean>()
-
 
   public activity: Activity = generateMockActivity();
 
@@ -43,21 +50,30 @@ export class ActivityDetailsComponent implements OnInit {
   public isFavorite: boolean
   public alreadySignedUp: boolean
 
-  public user: User = this.storageService.getItem('user')
+  //public user: User = this.storageService.getItem('user')
 
   constructor(
     private formBuilder: FormBuilder,
-    private usersService: UsersService,
-    private activitiesService: ActivitiesService,
+    //private usersService: UsersService,
+    //private activitiesService: ActivitiesService,
     private storageService: StorageService,
     private store: Store<AppState>
   ) { }
 
-  public isTourist = this.usersService.currentUser && this.usersService.currentUser.type == 0
-  public isCompany = this.usersService.currentUser && this.usersService.currentUser.type == 1
+
 
   ngOnInit(): void {
-    this.getCurrentUser()
+
+    this.store.select('login').subscribe(userResponse =>
+      this.user = userResponse.user);
+
+    this.store.select('activities').subscribe(activitiesResponse => {
+      this.myActivities = activitiesResponse.myActivities;
+      this.peopleRegistered = activitiesResponse.peopleRegistered;
+    });
+
+    this.isTourist = this.user && this.user.type == UserType.TOURIST;
+    this.isCompany = this.user && this.user.type == UserType.COMPANY;
 
     this.categoryList = [
       'Cultura i patrimoni',
@@ -79,42 +95,42 @@ export class ActivityDetailsComponent implements OnInit {
         label: 'English'
       }
     ]
-    this.name = new FormControl({ value: '', disabled: !this.ownerId }, [
+    this.name = new FormControl({ value: '', disabled: !this.user }, [
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(35)
     ])
 
-    this.description = new FormControl({ value: '', disabled: !this.ownerId })
+    this.description = new FormControl({ value: '', disabled: !this.user })
 
-    this.category = new FormControl({ value: '', disabled: !this.ownerId }, [
+    this.category = new FormControl({ value: '', disabled: !this.user }, [
       Validators.required
     ])
 
-    this.subcategory = new FormControl({ value: '', disabled: !this.ownerId }, [
+    this.subcategory = new FormControl({ value: '', disabled: !this.user }, [
       Validators.required
     ])
 
-    this.language = new FormControl({ value: '', disabled: !this.ownerId }, [
+    this.language = new FormControl({ value: '', disabled: !this.user }, [
       Validators.required
     ])
 
-    this.price = new FormControl({ value: '', disabled: !this.ownerId }, [
+    this.price = new FormControl({ value: '', disabled: !this.user }, [
       Validators.required,
       Validators.min(0)
     ])
 
-    this.minimumCapacity = new FormControl({ value: '', disabled: !this.ownerId }, [
+    this.minimumCapacity = new FormControl({ value: '', disabled: !this.user }, [
       Validators.required,
       Validators.min(0)
     ])
 
-    this.limitCapacity = new FormControl({ value: '', disabled: !this.ownerId }, [
+    this.limitCapacity = new FormControl({ value: '', disabled: !this.user }, [
       Validators.required,
       Validators.min(0)
     ])
 
-    this.cancelled = new FormControl({ value: '', disabled: !this.ownerId })
+    this.cancelled = new FormControl({ value: '', disabled: !this.user })
 
     this.activityForm = this.formBuilder.group({
       name: this.name,
@@ -126,11 +142,13 @@ export class ActivityDetailsComponent implements OnInit {
       minimumCapacity: this.minimumCapacity,
       limitCapacity: this.limitCapacity,
       cancelled: this.cancelled,
-      userId: this.usersService.currentUser ? this.usersService.currentUser.id : null
+      userId: this.user ? this.user.id : 0
     })
+
     this.getActivity()
-    if (this.id) {
-      this.getPeopleRegistered(this.id)
+
+    if (this.selectedActivity) {
+      this.getPeopleRegistered()
     }
     this.onChanges()
   }
@@ -169,19 +187,22 @@ export class ActivityDetailsComponent implements OnInit {
   }*/
 
   save(): void {
-    this.activity.name = this.name.value
+    this.activity = new Activity(
+      this.name.value,
+      this.category.value,
+      this.subcategory.value,
+      this.price.value,
+      this.language.value,
+      this.minimumCapacity.value,
+      this.limitCapacity.value,
+      this.user ? this.user.id : 0
+    );
+
     this.activity.description = this.description.value
-    this.activity.category = this.category.value
-    this.activity.subcategory = this.subcategory.value
-    this.activity.language = this.language.value
-    this.activity.price = this.price.value
-    this.activity.minimumCapacity = this.minimumCapacity.value
-    this.activity.limitCapacity = this.limitCapacity.value
     this.activity.cancelled = this.cancelled.value || false
-    this.activity.userId = this.usersService.currentUser ? this.usersService.currentUser.id : null
 
     if (!this.activityForm.invalid) {
-      if (this.id) {
+      if (this.activity.id) {
         this.store.dispatch(
           editActivity({ id: this.activity.id, newInfo: this.activity })
         );
@@ -204,11 +225,12 @@ export class ActivityDetailsComponent implements OnInit {
 
   ngOnChanges() {
     this.getActivity()
-    this.getPeopleRegistered(this.id)
+    this.getPeopleRegistered()
   }
 
-  getPeopleRegistered(id) {
-    return this.activitiesService.getPeopleOnActivity(id).subscribe(_ => this.peopleRegistered = _.length)
+  getPeopleRegistered() {
+    return this.peopleRegistered;
+    /*return this.activitiesService.getPeopleOnActivity(this.selectedActivity.id).subscribe(_ => this.peopleRegistered = _.length)*/
   }
 
   get state() {
@@ -223,8 +245,7 @@ export class ActivityDetailsComponent implements OnInit {
   }
 
   getActivity(): void {
-    const id = this.id
-    if (!id) {
+    if (!this.selectedActivity) {
       this.activity = generateMockActivity();
 
       if (this.activityForm) {
@@ -238,7 +259,7 @@ export class ActivityDetailsComponent implements OnInit {
           minimumCapacity: '',
           limitCapacity: '',
           cancelled: false,
-          userId: this.usersService.currentUser ? this.usersService.currentUser.id : null
+          userId: this.user ? this.user.id : 0
         })
       }
       return
@@ -246,14 +267,31 @@ export class ActivityDetailsComponent implements OnInit {
     this.isSignedUp()
 
     const favorites = this.storageService.getItem('favorites') || []
-    const index = favorites.indexOf(this.id);
+    const index = favorites.indexOf(this.selectedActivity.id);
     if (index > -1) {
       this.isFavorite = true
     } else {
       this.isFavorite = false
     }
 
-    this.activitiesService.getActivity(id)
+    this.activity = this.selectedActivity;
+    if (this.activityForm) {
+      this.activityForm.setValue({
+        name: this.activity.name,
+        description: this.activity.description || '',
+        category: this.activity.category,
+        subcategory: this.activity.subcategory,
+        language: this.activity.language,
+        price: this.activity.price,
+        minimumCapacity: this.activity.minimumCapacity,
+        limitCapacity: this.activity.limitCapacity,
+        cancelled: this.activity.cancelled || false,
+        userId: this.user ? this.user.id : 0
+      })
+    }
+
+
+    /*this.activitiesService.getActivity(id)
       .subscribe(activity => {
         // console.log('activity', activity)
         this.activity = activity
@@ -267,17 +305,16 @@ export class ActivityDetailsComponent implements OnInit {
           minimumCapacity: activity.minimumCapacity,
           limitCapacity: activity.limitCapacity,
           cancelled: activity.cancelled || false,
-          userId: this.usersService.currentUser ? this.usersService.currentUser.id : null
+          userId: this.user.id ? this.user.id : 0
         })
-      })
+      })*/
   }
 
-  async isSignedUp() {
-    const userId = this.usersService.currentUser ? this.usersService.currentUser.id : null
+  isSignedUp() {
+    const userId = this.user ? this.user.id : 0
     if (userId) {
-      const myActivities = await this.activitiesService.getMyActivities(userId).toPromise()
-      const myActivitiesArray = myActivities.map(act => act.activityId)
-      this.alreadySignedUp = myActivitiesArray.includes(this.id)
+      const myActivitiesArray = this.myActivities.map(act => act.activityId)
+      this.alreadySignedUp = myActivitiesArray.includes(this.selectedActivity.id)
     }
   }
 
@@ -306,26 +343,22 @@ export class ActivityDetailsComponent implements OnInit {
   }*/
 
   signup() {
-    this.store.dispatch(signUpActivity({ id: this.id, userId: this.activity.userId }));
+    this.store.dispatch(signUpActivity({ currentActivity: this.activity.id, userId: this.activity.userId }));
   }
 
   toggleFavorite() {
     const favorites = this.storageService.getItem('favorites') || []
-    if (favorites.includes(this.id)) {
-      const index = favorites.indexOf(this.id);
+    if (favorites.includes(this.activity.id)) {
+      const index = favorites.indexOf(this.activity.id);
       if (index > -1) {
         favorites.splice(index, 1);
       }
       this.isFavorite = false
     } else {
-      favorites.push(this.id)
+      favorites.push(this.activity.id)
       this.isFavorite = true
     }
     return this.storageService.addItem('favorites', favorites)
-  }
-
-  getCurrentUser() {
-    this.usersService.getCurrentUser().subscribe(user => this.user = user)
   }
 
 }

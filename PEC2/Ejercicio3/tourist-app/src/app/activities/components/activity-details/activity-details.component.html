@@ -14,7 +14,7 @@
     </div>
 
     <label for="description">Description</label>
-    <input [formControl]="description" type="text" name="description" id="description" >
+    <input [formControl]="description" type="text" name="description" id="description">
 
     <label for="type">Language*</label>
     <select [formControl]="language" required>
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-  
+
     <label for="type">Category*</label>
     <select [formControl]="category" required>
       <option *ngFor="let item of categoryList" [value]="item">{{item}}</option>
@@ -48,7 +48,7 @@
     </div>
 
     <label for="minimumCapacity">Price</label>
-    <input min="0" [formControl]="price" type="number" name="price" id="price" required >
+    <input min="0" [formControl]="price" type="number" name="price" id="price" required>
     <div *ngIf="price.touched && price.errors">
       <div class="error" *ngIf="price.errors.required">
         price is required.
@@ -59,7 +59,7 @@
     </div>
 
     <label for="minimumCapacity">Minimum capacity</label>
-    <input min="0" [formControl]="minimumCapacity" type="number" name="minimumCapacity" id="minimumCapacity" required >
+    <input min="0" [formControl]="minimumCapacity" type="number" name="minimumCapacity" id="minimumCapacity" required>
     <div *ngIf="minimumCapacity.touched && minimumCapacity.errors">
       <div class="error" *ngIf="minimumCapacity.errors.required">
         minimum Capacity is required.
@@ -70,7 +70,7 @@
     </div>
 
     <label for="limitCapacity">Limit capacity</label>
-    <input min="0" [formControl]="limitCapacity" type="number" name="limitCapacity" id="limitCapacity" required >
+    <input min="0" [formControl]="limitCapacity" type="number" name="limitCapacity" id="limitCapacity" required>
     <div *ngIf="limitCapacity.touched && limitCapacity.errors">
       <div class="error" *ngIf="limitCapacity.errors.required">
         limit Capacity is required.
@@ -80,9 +80,9 @@
       </div>
     </div>
 
-    <div *ngIf="ownerId">
+    <div *ngIf="user">
       <label for="cancelled">Cancelled</label>
-      <input [formControl]="cancelled" type="checkbox" name="cancelled" id="cancelled" >
+      <input [formControl]="cancelled" type="checkbox" name="cancelled" id="cancelled">
     </div>
 
 
@@ -90,17 +90,19 @@
       <strong>People registered:</strong> {{peopleRegistered}}
     </p>
     <p>
-      <strong>Status:</strong>  {{state}}
+      <strong>Status:</strong> {{state}}
     </p>
-    
+
     <div *ngIf="user && isTourist">
       <button *ngIf="!alreadySignedUp" [disabled]="state != 'Places available'" (click)="signup()">Sign up</button>
-      <button *ngIf="alreadySignedUp" [disabled]="state != 'Places available'" (click)="cancel()">Cancel registration</button>
+      <button *ngIf="alreadySignedUp" [disabled]="state != 'Places available'" (click)="cancel()">Cancel
+        registration</button>
 
-      <button [class.active]="isFavorite" (click)="toggleFavorite()"><span *ngIf="!isFavorite">Add to favorites &hearts;</span> <span *ngIf="isFavorite">Remove from favorites &hearts;</span></button>
+      <button [class.active]="isFavorite" (click)="toggleFavorite()"><span *ngIf="!isFavorite">Add to favorites
+          &hearts;</span> <span *ngIf="isFavorite">Remove from favorites &hearts;</span></button>
     </div>
-    
-    <div *ngIf="ownerId">
+
+    <div *ngIf="user && isCompany">
       <button type="submit" [disabled]="!activityForm.valid">Save</button>
     </div>
   </form>

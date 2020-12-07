@@ -50,27 +50,27 @@ export class ActivitiesService {
 
   updateActivity(activity: Activity): Observable<Activity> {
     // console.log('updated activity', activity)
-    return this.http.put<Activity>('api/activities/' + activity.id, activity, this.httpOptions).pipe()
+    return this.http.put<Activity>('api/activities/' + activity.id, activity, this.httpOptions)
   }
 
   addActivity(activity: Activity): Observable<any> {
     // console.log('added activity', activity)
-    return this.http.post('api/activities/', activity, this.httpOptions).pipe()
+    return this.http.post('api/activities/', activity, this.httpOptions)
   }
 
   deleteActivity(activity: Activity | number): Observable<Activity> {
     const id = typeof activity === 'number' ? activity : activity.id;
     const url = `api/activities/${id}`;
 
-    return this.http.delete<Activity>(url, this.httpOptions).pipe();
+    return this.http.delete<Activity>(url, this.httpOptions)
   }
 
   signUpActivity(userId: number, activityId: number): Observable<MyActivities> {
-    return this.http.post<MyActivities>('api/my_activities_user', { activityId, userId }).pipe()
+    return this.http.post<MyActivities>('api/my_activities_user', { activityId, userId })
   }
 
   removeMyActivity(myActivityId: number): Observable<MyActivities> {
     // console.log('removing my activity', myActivityId)
-    return this.http.delete<MyActivities>(`api/my_activities_user/${myActivityId}`).pipe()
+    return this.http.delete<MyActivities>(`api/my_activities_user/${myActivityId}`)
   }
 }

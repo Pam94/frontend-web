@@ -12,6 +12,7 @@ export class Activity {
   date?: Date
   description?: string
 
+
   constructor(name: string, category: string, subcategory: string, price: number, language: string, minimumCapacity: number, limitCapacity: number, userId: number) {
     this.name = name;
     this.category = category;
