@@ -10,8 +10,7 @@ import { addUser, addUserError, addUserSuccess } from '../actions';
 export class SignUpEffects {
     constructor(
         private actions$: Actions,
-        private usersService: UsersService,
-        private router: Router
+        private usersService: UsersService
     ) { }
 
     signUp$ = createEffect(() =>
@@ -19,26 +18,19 @@ export class SignUpEffects {
             ofType(addUser),
             switchMap((action) =>
                 this.usersService.addUser(action.newUser).pipe(
+                    tap((newUser) => {
+                        if (newUser) {
+                            this.usersService.loggedIn = true;
+                            this.usersService.logger.next(
+                                this.usersService.loggedIn);
+                            this.usersService.currentUser = newUser;
+                            this.usersService.userSubject.next(
+                                this.usersService.currentUser);
+                        }
+                    }),
                     map((user) => addUserSuccess({ newUser: user })),
                     catchError((err) => of(addUserError({ payload: err })))
                 )
             )
-        ));
-
-    signUpSuccess$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(addUserSuccess),
-            tap((action) => {
-                if (action.newUser) {
-                    this.usersService.loggedIn = true;
-                    this.usersService.logger.next(
-                        this.usersService.loggedIn);
-                    this.usersService.currentUser = action.newUser;
-                    this.usersService.userSubject.next(
-                        this.usersService.currentUser);
-
-                    this.router.navigate(['/']);
-                }
-            })
         ));
 }

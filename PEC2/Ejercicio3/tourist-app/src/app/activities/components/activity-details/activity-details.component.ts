@@ -24,9 +24,6 @@ export class ActivityDetailsComponent implements OnInit {
   isTourist: boolean
   isCompany: boolean
 
-  /*= this.usersService.currentUser && this.usersService.currentUser.type == 0*/
-  /*public isCompany = this.usersService.currentUser && this.usersService.currentUser.type == 1*/
-
   @Output() edited = new EventEmitter<boolean>()
 
   public activity: Activity = generateMockActivity();
@@ -50,17 +47,11 @@ export class ActivityDetailsComponent implements OnInit {
   public isFavorite: boolean
   public alreadySignedUp: boolean
 
-  //public user: User = this.storageService.getItem('user')
-
   constructor(
     private formBuilder: FormBuilder,
-    //private usersService: UsersService,
-    //private activitiesService: ActivitiesService,
     private storageService: StorageService,
     private store: Store<AppState>
   ) { }
-
-
 
   ngOnInit(): void {
 
@@ -289,25 +280,6 @@ export class ActivityDetailsComponent implements OnInit {
         userId: this.user ? this.user.id : 0
       })
     }
-
-
-    /*this.activitiesService.getActivity(id)
-      .subscribe(activity => {
-        // console.log('activity', activity)
-        this.activity = activity
-        this.activityForm.setValue({
-          name: activity.name,
-          description: activity.description || '',
-          category: activity.category,
-          subcategory: activity.subcategory,
-          language: activity.language,
-          price: activity.price,
-          minimumCapacity: activity.minimumCapacity,
-          limitCapacity: activity.limitCapacity,
-          cancelled: activity.cancelled || false,
-          userId: this.user.id ? this.user.id : 0
-        })
-      })*/
   }
 
   isSignedUp() {

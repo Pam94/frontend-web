@@ -134,7 +134,7 @@ export class UsersService {
   }*/
 
   addUser(newUser: User): Observable<User> {
-    console.log(newUser);
+    this.router.navigate(['/']);
     return this.http.post<User>(this.usersUrl, newUser, this.httpOptions);
   }
 

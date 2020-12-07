@@ -17,37 +17,31 @@ export class LoginEffects {
             ofType(login),
             switchMap((action) =>
                 this.usersService.login(action.email, action.password).pipe(
+                    tap((user) => {
+                        if (user) {
+                            this.usersService.loggedIn = true;
+                            this.usersService.currentUser = user;
+                            this.usersService.logger.next(
+                                this.usersService.loggedIn);
+                            this.usersService.userSubject.next(
+                                this.usersService.currentUser);
+
+                            this.usersService.getCurrentUser();
+                            this.usersService.router.navigate(['/']);
+                        }
+                        else {
+                            this.usersService.loggedIn = false;
+                            this.usersService.currentUser = null;
+                            this.usersService.logger.next(
+                                this.usersService.loggedIn);
+                            this.usersService.userSubject.next(
+                                this.usersService.currentUser);
+                        }
+                    }),
                     map((loggedUser) => logInSucess({ user: loggedUser })),
                     catchError((err) => of(logInError({ payload: err })))
                 )
             )));
-
-    logInSuccess$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(logInSucess),
-            tap((action) => {
-                if (action.user) {
-                    this.usersService.loggedIn = true;
-                    this.usersService.currentUser = action.user;
-                    this.usersService.logger.next(
-                        this.usersService.loggedIn);
-                    this.usersService.userSubject.next(
-                        this.usersService.currentUser);
-
-                    this.usersService.getCurrentUser();
-                    this.usersService.router.navigate(['/']);
-                }
-                else {
-                    this.usersService.loggedIn = false;
-                    this.usersService.currentUser = null;
-                    this.usersService.logger.next(
-                        this.usersService.loggedIn);
-                    this.usersService.userSubject.next(
-                        this.usersService.currentUser);
-                }
-            })
-        )
-    );
 
     logOut$ = createEffect(() =>
         this.actions$.pipe(
