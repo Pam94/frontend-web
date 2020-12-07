@@ -1,4 +1,2 @@
-import { LoginEffects } from './login.effects';
-import { SignUpEffects } from './signup.effects';
-
-export const LoginEffectsArray: any[] = [LoginEffects, SignUpEffects];
+export { LoginEffects } from './login.effects';
+export { SignUpEffects } from './signup.effects';
