@@ -31,4 +31,10 @@ export class LoginComponent implements OnInit {
     console.log('Email: ' + this.email.value + ' Password: ' + this.password.value);
   }
 
+  public getErrorMessage(): string {
+    if (this.password.hasError('required')) {
+      return 'You must enter a password';
+    }
+  }
+
 }
