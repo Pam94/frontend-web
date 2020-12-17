@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ValidatorFn, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CheckValidator } from 'src/app/Shared/Directives/checkValidator';
 import { PublicFunctions } from 'src/app/Shared/Directives/publicFunctions';
-import { Education } from '../../Models/education';
+import { Education } from '../../models/education';
 import { educationTypes } from 'src/app/Shared/Enums/publicEnums';
 import { universityLevelTypes } from 'src/app/Shared/Enums/publicEnums';
 import { cycleLevelTypes } from 'src/app/Shared/Enums/publicEnums';
@@ -27,7 +27,7 @@ export class ProfileEducationComponent implements OnInit {
   education: Education = {} as Education;
 
   constructor(private route: ActivatedRoute, public router: Router,
-              private store: Store<AppState>) {
+    private store: Store<AppState>) {
     // Se recoge el identificador de la educación pasada por el navegador (si se edita)
     this.route.params.subscribe(params => {
       const uid = +params.uid;
@@ -38,15 +38,14 @@ export class ProfileEducationComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   public loadFormInstance(): void {
     // En caso de creación de una nueva educación
-    if (this.education === undefined)
-    {
+    if (this.education === undefined) {
       // Se incicializa la colección
       this.education = new Education();
-      this.education.type  = null;
+      this.education.type = null;
       this.education.level = null;
       this.education.name = '';
       this.education.university = '';
@@ -76,37 +75,37 @@ export class ProfileEducationComponent implements OnInit {
   }
 
   // Se guarda un nuevo tipo de educación
-  public save (education: Education){
+  public save(education: Education) {
     const user = this.userState$.user;
-    const _education = PublicFunctions.fakeIncreaseUid <Education>(user.educations, education);
+    const _education = PublicFunctions.fakeIncreaseUid<Education>(user.educations, education);
     user.educations.push(_education);
     // Se actualiza el usuario
-    this.store.dispatch(UserAction.addUserEducation({user}));
+    this.store.dispatch(UserAction.addUserEducation({ user }));
   }
 
   // Se edita una educación
-  public update (education: Education) {
+  public update(education: Education) {
     const user = this.userState$.user;
     const educations = user.educations;
     const foundIndex = educations.findIndex(_education => _education.uid === education.uid);
     educations[foundIndex] = education;
     // Se actualiza el usuario
-    this.store.dispatch(UserAction.updateUserEducation({user}));
+    this.store.dispatch(UserAction.updateUserEducation({ user }));
   }
 
   // Se recoge un cambio en el tipo de educación
   setEnumLevelTypes(value: string): any {
-    if (value.includes(educationTypes.university.toString())){
+    if (value.includes(educationTypes.university.toString())) {
       this.eLevelTypes = universityLevelTypes;
     }
-    else if (value.includes(educationTypes.cycle.toString())){
+    else if (value.includes(educationTypes.cycle.toString())) {
       this.eLevelTypes = cycleLevelTypes;
     }
   }
 
-  saveOrUpdate(education: Education){
+  saveOrUpdate(education: Education) {
     // Se invoca la función save o update en función de la respuesta de isNew
-    this.isNew() ? this.save (education) : this.update(education);
+    this.isNew() ? this.save(education) : this.update(education);
   }
 
   public isNew(): boolean {

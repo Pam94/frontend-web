@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ValidatorFn, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from '../../Models/user';
+import { User } from '../../models/user';
 import { CheckValidator } from 'src/app/Shared/Directives/checkValidator';
 import { userTypes } from 'src/app/Shared/Enums/publicEnums';
 import { Router } from '@angular/router';
-import { Language } from '../../Models/language';
-import { Education } from '../../Models/education';
+import { Language } from '../../models/language';
+import { Education } from '../../models/education';
 import { AppState } from 'src/app/app.reducers';
 import { Store } from '@ngrx/store';
 import { LoginState } from '../../../login/reducers';
@@ -39,18 +39,16 @@ export class RegisterComponent implements OnInit {
   public bSubmitted: boolean;
 
   constructor(private store: Store<AppState>, private formBuilder: FormBuilder,
-              public router: Router)
-  {
+    public router: Router) {
     this.store.select('login').subscribe(login => this.loginState$ = login);
     this.store.select('user').subscribe(userState => {
       this.userState$ = userState;
-      if ((userState.user !== null) && (!this.loginState$.loggedIn))
-      {
+      if ((userState.user !== null) && (!this.loginState$.loggedIn)) {
         const credentials = {
           email: userState.user?.profile.email,
           password: userState.user?.profile.password,
         };
-        this.store.dispatch(LoginAction.login({credentials}));
+        this.store.dispatch(LoginAction.login({ credentials }));
       }
     });
   }
@@ -59,9 +57,9 @@ export class RegisterComponent implements OnInit {
     this.bSubmitted = false;
     // Al inicializar el componente se registran los formControl
     this.name = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(55),
-      Validators.pattern('[a-zA-Z áéíóúÁÉÍÓÚÑñÇç]*')]);
+    Validators.pattern('[a-zA-Z áéíóúÁÉÍÓÚÑñÇç]*')]);
     this.surname = new FormControl('', [Validators.minLength(3), Validators.maxLength(55),
-      Validators.pattern('[a-zA-Z áéíóúÁÉÍÓÚÑñÇç]*')]);
+    Validators.pattern('[a-zA-Z áéíóúÁÉÍÓÚÑñÇç]*')]);
     this.type = new FormControl(null, [Validators.required]);
     this.email = new FormControl('', [Validators.required, Validators.email]);
     this.password = new FormControl('', [Validators.required, Validators.minLength(8)]);
@@ -77,8 +75,7 @@ export class RegisterComponent implements OnInit {
     }, { validator: CheckValidator.equalValue('password', 'password2') });
   }
 
-  public userRegister()
-  {
+  public userRegister() {
     this.bSubmitted = true;
     // Se inicializa la clase User
     this.user = new User();
@@ -92,6 +89,6 @@ export class RegisterComponent implements OnInit {
     this.user.educations = new Array<Education>();
     this.user.languages = new Array<Language>();
 
-    this.store.dispatch(UserAction.createUser({user: this.user}));
+    this.store.dispatch(UserAction.createUser({ user: this.user }));
   }
 }

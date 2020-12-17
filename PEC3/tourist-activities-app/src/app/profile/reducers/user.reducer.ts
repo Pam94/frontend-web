@@ -1,17 +1,18 @@
-import { getLoginUser, getLoginUserSuccess, getLoginUserFailure, formatUserSuccess,
-        createUser, createUserSuccess, createUserFailure,
-        updateUser, updateUserSuccess, updateUserFailure,
-        getFavoriteUserActivitiesStorageSuccess, getFavoriteUserActivitiesStorageFailure,
-        setFavoriteUserActivitiesStorage, setFavoriteUserActivitiesStorageSuccess, setFavoriteUserActivitiesStorageFailure,
-        updateUserEducation, updateUserEducationSuccess, updateUserEducationFailure,
-        deleteUserEducation, deleteUserEducationSuccess, deleteUserEducationFailure,
-        addUserEducation, addUserEducationSuccess, addUserEducationFailure,
-        updateUserLanguage, updateUserLanguageSuccess, updateUserLanguageFailure,
-        deleteUserLanguage, deleteUserLanguageSuccess, deleteUserLanguageFailure,
-        addUserLanguage, addUserLanguageSuccess, addUserLanguageFailure} from '../actions';
+import {
+    getLoginUser, getLoginUserSuccess, getLoginUserFailure, formatUserSuccess,
+    createUser, createUserSuccess, createUserFailure,
+    updateUser, updateUserSuccess, updateUserFailure,
+    getFavoriteUserActivitiesStorageSuccess, getFavoriteUserActivitiesStorageFailure,
+    setFavoriteUserActivitiesStorage, setFavoriteUserActivitiesStorageSuccess, setFavoriteUserActivitiesStorageFailure,
+    updateUserEducation, updateUserEducationSuccess, updateUserEducationFailure,
+    deleteUserEducation, deleteUserEducationSuccess, deleteUserEducationFailure,
+    addUserEducation, addUserEducationSuccess, addUserEducationFailure,
+    updateUserLanguage, updateUserLanguageSuccess, updateUserLanguageFailure,
+    deleteUserLanguage, deleteUserLanguageSuccess, deleteUserLanguageFailure,
+    addUserLanguage, addUserLanguageSuccess, addUserLanguageFailure
+} from '../actions';
 import { createReducer, on } from '@ngrx/store';
-import { User } from '../Models/user';
-
+import { User } from '../models/user';
 export interface UserState {
     user: User;
     error: string | null;

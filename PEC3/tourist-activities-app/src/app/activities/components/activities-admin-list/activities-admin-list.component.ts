@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Activity } from '../../Models/activity';
+import { Activity } from '../../models/activity';
 
 import { AppState } from '../../../app.reducers';
 import { Store } from '@ngrx/store';
@@ -18,24 +18,23 @@ export class ActivitiesAdminListComponent implements OnInit {
   activitiesListState$: ActivityListState;
   userState$: UserState;
 
-  constructor(private formBuilder: FormBuilder, public router: Router, private store: Store<AppState>)
-  {
+  constructor(private formBuilder: FormBuilder, public router: Router, private store: Store<AppState>) {
     this.store.select('activities').subscribe(activities => this.activitiesListState$ = activities);
     this.store.select('user').subscribe(userStates => this.userState$ = userStates);
   }
 
   ngOnInit(): void {
     const idUser = this.userState$.user?.id;
-    this.store.dispatch(ActivitiesAction.getActivitiesAdmin({idUser}));
+    this.store.dispatch(ActivitiesAction.getActivitiesAdmin({ idUser }));
   }
 
-   /**
-    * Se recoge la pulsación sobre el botón de borrar idioma
-    * @param activityId - identificador de la actividad a borrar
-    */
-   onClickDeleteActivity(activity: Activity): void {
+  /**
+   * Se recoge la pulsación sobre el botón de borrar idioma
+   * @param activityId - identificador de la actividad a borrar
+   */
+  onClickDeleteActivity(activity: Activity): void {
     if (confirm('Are you sure to delete this activity?')) {
-      this.store.dispatch(ActivitiesAction.deleteActivity({activity}));
+      this.store.dispatch(ActivitiesAction.deleteActivity({ activity }));
     }
   }
 }

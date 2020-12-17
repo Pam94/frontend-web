@@ -3,7 +3,7 @@ import { ValidatorFn, FormBuilder, FormControl, FormGroup, Validators } from '@a
 import { ActivatedRoute, Router } from '@angular/router';
 import { languageLevels } from 'src/app/Shared/Enums/publicEnums';
 import { activityLenguages } from 'src/app/Shared/Enums/publicEnums';
-import { Language } from '../../Models/language';
+import { Language } from '../../models/language';
 import { CheckValidator } from 'src/app/Shared/Directives/checkValidator';
 import { PublicFunctions } from 'src/app/Shared/Directives/publicFunctions';
 
@@ -25,7 +25,7 @@ export class ProfileLanguageComponent implements OnInit {
   language: Language = {} as Language;
 
   constructor(private route: ActivatedRoute, public router: Router,
-              private store: Store<AppState>) {
+    private store: Store<AppState>) {
     // Se recoge el identificador del lenguage pasado por el navegador (si se edita)
     this.route.params.subscribe(params => {
       const uid = +params.uid;
@@ -36,16 +36,15 @@ export class ProfileLanguageComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   public loadFormInstance(): void {
     // En caso de creación de un nuevo lenguaje
-    if (this.language === undefined)
-    {
+    if (this.language === undefined) {
       // Se incicializa la colección
       this.language = new Language();
       this.language.finish = '';
-      this.language.level  = null;
+      this.language.level = null;
       this.language.language = null;
     }
     this.rForm = new FormGroup({
@@ -64,34 +63,32 @@ export class ProfileLanguageComponent implements OnInit {
   }
 
   // En caso de creación de un nuevo lenguaje
-  public save (language: Language){
-    if (!this.userState$.user.languages.find(x => x.language === language.language))
-    {
+  public save(language: Language) {
+    if (!this.userState$.user.languages.find(x => x.language === language.language)) {
       const user = this.userState$.user;
-      const _language = PublicFunctions.fakeIncreaseUid <Language>(user.languages, language);
+      const _language = PublicFunctions.fakeIncreaseUid<Language>(user.languages, language);
       user.languages.push(_language);
       // Se actualiza el usuario
-      this.store.dispatch(UserAction.addUserLanguage({user}));
+      this.store.dispatch(UserAction.addUserLanguage({ user }));
     }
-    else
-    {
+    else {
       alert('The language already exists!');
     }
   }
 
   // Se actualiza el lenguaje
-  public update (language: Language){
+  public update(language: Language) {
     const user = this.userState$.user;
     const languages = user.languages;
     const foundIndex = languages.findIndex(_language => _language.uid === language.uid);
     languages[foundIndex] = language;
     // Se actualiza el usuario
-    this.store.dispatch(UserAction.updateUserLanguage({user}));
+    this.store.dispatch(UserAction.updateUserLanguage({ user }));
   }
 
-  saveOrUpdate(language: Language){
+  saveOrUpdate(language: Language) {
     // Se invoca la función save o update en función de la respuesta de isNew
-    this.isNew() ? this.save (language) : this.update(language);
+    this.isNew() ? this.save(language) : this.update(language);
   }
 
   public isNew(): boolean {

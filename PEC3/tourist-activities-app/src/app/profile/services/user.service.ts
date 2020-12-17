@@ -1,9 +1,9 @@
 import { Injectable, Input } from '@angular/core';
-import { User } from '../Models/user';
-import { Credentials } from '../../Login/Models/credentials';
+import { User } from '../models/user';
 import { throwError, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, exhaustMap } from 'rxjs/operators';
+import { Credentials } from 'src/app/login/models/credentials';
 
 
 @Injectable({
@@ -12,7 +12,7 @@ import { catchError, map, exhaustMap } from 'rxjs/operators';
 export class UserService {
   private usersUrl = 'api/users';  // URL to web api
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -22,11 +22,10 @@ export class UserService {
     return this.http.get<User[]>(this.usersUrl).pipe(
       map((users) => {
         const user = users.find(x => x.profile.email === email && x.profile.password === password);
-        if (user !== undefined){
+        if (user !== undefined) {
           return user;
         }
-        else
-        {
+        else {
           throw throwError('Invalid username or password');
         }
       })
@@ -40,8 +39,7 @@ export class UserService {
   getUserFavoriteActivities(idUser: number): Observable<number[]> {
     let idActivitiesUserFavorites: number[];
     idActivitiesUserFavorites = JSON.parse(localStorage.getItem('lStorageFavorites' + idUser));
-    if (idActivitiesUserFavorites === null)
-    {
+    if (idActivitiesUserFavorites === null) {
       idActivitiesUserFavorites = new Array<number>();
     }
     return of(idActivitiesUserFavorites);
@@ -102,12 +100,10 @@ export class UserService {
   userExist(user: User): Observable<boolean> {
     return this.http.get<User[]>(this.usersUrl).pipe(
       map((users) => {
-        if (users.find(x => x.profile.email === user.profile.email) === undefined)
-        {
+        if (users.find(x => x.profile.email === user.profile.email) === undefined) {
           return false;
         }
-        else
-        {
+        else {
           return true;
         }
       })
@@ -122,14 +118,14 @@ export class UserService {
   addUser(user: User): Observable<any> {
     return this.userExist(user).pipe(
       exhaustMap((exist) => {
-      if (exist){
-        throw throwError('That email is already assigned to another user.');
-      }
-      else {
-        return this.http.post<User>(this.usersUrl, user, this.httpOptions).pipe(
-          catchError(this.handleError<User>('addUser'))
-        );
-      }
+        if (exist) {
+          throw throwError('That email is already assigned to another user.');
+        }
+        else {
+          return this.http.post<User>(this.usersUrl, user, this.httpOptions).pipe(
+            catchError(this.handleError<User>('addUser'))
+          );
+        }
       })
     );
   }
