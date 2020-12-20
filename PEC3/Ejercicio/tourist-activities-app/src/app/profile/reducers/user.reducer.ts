@@ -13,6 +13,7 @@ import {
 } from '../actions';
 import { createReducer, on } from '@ngrx/store';
 import { User } from '../models/user';
+
 export interface UserState {
     user: User;
     error: string | null;

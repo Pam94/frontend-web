@@ -1,5 +1,5 @@
 <div class="container">
-    <form class="text-center border border-light p-5" [formGroup]="loginForm" (ngSubmit)="checkLogin()">
+    <form [formGroup]="loginForm" (ngSubmit)="checkLogin()">
         <!-- Email -->
         <section>
             <mat-form-field appearance="fill">
@@ -15,7 +15,7 @@
             </mat-form-field>
         </section>
         <!--
-            <input type="email" [formControl]="email" class="form-control mb-4" placeholder="User E-mail">
+        <input type="email" [formControl]="email" class="form-control mb-4" placeholder="User E-mail">
         <span style="color: red;" *ngIf="loginForm.get('email').errors && (loginForm.get('email').touched || loginForm.get('email').dirty)">
             <span *ngIf="loginForm.get('email').errors.required">Email is required</span> 
             <span *ngIf="loginForm.get('email').errors.email">Email doesn't have a correct format</span>   
@@ -54,8 +54,9 @@
         <section>
             <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Sign in</button>
         </section>
+
         <!--
-            <button class="btn btn-primary my-4" type="submit" [disabled]="!loginForm.valid">Sign in</button>
+        <button class="btn btn-primary my-4" type="submit" [disabled]="!loginForm.valid">Sign in</button>
         -->
     </form>
 </div>

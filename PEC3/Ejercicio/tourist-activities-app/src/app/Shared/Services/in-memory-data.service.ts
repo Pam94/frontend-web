@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { User } from 'src/app/profile/models/user';
 import { userTypes } from 'src/app/Shared/Enums/publicEnums';
 import { userNationalities } from 'src/app/Shared/Enums/publicEnums';
+import { User } from '../../profile/models/user';
 import { activityCategories } from 'src/app/Shared/Enums/publicEnums';
 import { activityLenguages } from 'src/app/Shared/Enums/publicEnums';
 import { activityStates } from 'src/app/Shared/Enums/publicEnums';

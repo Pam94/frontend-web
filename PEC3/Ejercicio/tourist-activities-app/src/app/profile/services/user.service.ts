@@ -1,9 +1,9 @@
 import { Injectable, Input } from '@angular/core';
 import { User } from '../models/user';
+import { Credentials } from '../../login/models/credentials';
 import { throwError, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, exhaustMap } from 'rxjs/operators';
-import { Credentials } from 'src/app/login/models/credentials';
 
 
 @Injectable({
