@@ -5,14 +5,14 @@
             <mat-form-field appearance="fill">
                 <mat-label>E-mail</mat-label>
                 <input matInput type="email" [formControl]="email" placeholder="User E-mail" />
-                <section
-                    *ngIf="loginForm.get('email').errors && (loginForm.get('email').touched || loginForm.get('email').dirty)">
-
-                    <mat-error *ngIf="loginForm.get('email').errors.required">Email is required</mat-error>
-                    <mat-error *ngIf="loginForm.get('email').errors.email">Email doesn't have a correct format
-                    </mat-error>
-                </section>
             </mat-form-field>
+            <section
+                *ngIf="loginForm.get('email').errors && (loginForm.get('email').touched || loginForm.get('email').dirty)">
+
+                <mat-error *ngIf="loginForm.get('email').errors.required">Email is required</mat-error>
+                <mat-error *ngIf="loginForm.get('email').errors.email">Email doesn't have a correct format
+                </mat-error>
+            </section>
         </section>
         <!--
         <input type="email" [formControl]="email" class="form-control mb-4" placeholder="User E-mail">
@@ -33,10 +33,11 @@
                     <mat-error *ngIf="loginForm.get('password').errors.required">User pwd is required</mat-error>
                 </section>
             </mat-form-field>
+            <mat-error *ngIf="loginState$.error && (bSubmitted)">
+                Invalid user or password
+            </mat-error>
         </section>
-        <mat-error *ngIf="loginState$.error && (bSubmitted)">
-            Invalid user or password
-        </mat-error>
+
         <!--
         <input type="password" [formControl]="password" class="form-control mb-4" placeholder="User Password">
         <span style="color: red;"
