@@ -1,55 +1,146 @@
 <div class="container">
-    <form class="text-center border border-light p-5" [formGroup]="rForm" (submit)="submit()"> 
+    <form [formGroup]="rForm" (submit)="submit()">
         <div class="form-group">
-            <div>
-                <!-- Level -->
+            <section>
+                <!-- Type -->
+                <mat-form-field appearance="fill">
+                    <mat-label>Select type...</mat-label>
+                    <mat-select formControlName="type" (change)="onChangeTypeValue()" placeholder="Type">
+                        <mat-option *ngFor="let type of eEducationTypes | keyvalue" [value]="type.value">
+                            {{type.value}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="rForm.get('type').errors && rForm.get('type').errors.required">Type is required
+                    </mat-error>
+                </mat-form-field>
+            </section>
+            <!--
                 <label for="type">Type:</label>
-                <select (change)="onChangeTypeValue()" formControlName="type" class="form-control mb-4" placeholder="Type">
-                    <option [ngValue]="null">Select type...</option>                
-                    <option *ngFor="let type of eEducationTypes | keyvalue" [ngValue]="type.value">{{type.value}}</option>              
+                <select (change)="onChangeTypeValue()" formControlName="type" class="form-control mb-4"
+                    placeholder="Type">
+                    <option [ngValue]="null">Select type...</option>
+                    <option *ngFor="let type of eEducationTypes | keyvalue" [ngValue]="type.value">{{type.value}}
+                    </option>
                 </select>
-                <span style="color: red;" *ngIf="rForm.get('type').errors && (rForm.get('type').touched || rForm.get('type').dirty)">                
+                <span style="color: red;"
+                    *ngIf="rForm.get('type').errors && (rForm.get('type').touched || rForm.get('type').dirty)">
                     <span *ngIf="rForm.get('type').errors.required">Type is required</span>
                 </span>
-            </div>
-            <div>
+            </div> -->
+
+            <section>
                 <!-- Level -->
+                <mat-form-field appearance="fill">
+                    <mat-label>Select level...</mat-label>
+                    <mat-select formControlName="level" name="level" placeholder="Level">
+                        <mat-option *ngFor="let level of eLevelTypes | keyvalue" [value]="level.value">
+                            {{level.value}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="rForm.get('level').errors && rForm.get('level').errors.required">Level is required
+                    </mat-error>
+                </mat-form-field>
+            </section>
+
+            <!--
                 <label for="level">Level:</label>
                 <select formControlName="level" name="level" class="form-control mb-4" placeholder="Level">
-                    <option [ngValue]="null">Select level...</option>                
-                    <option *ngFor="let level of eLevelTypes | keyvalue" [ngValue]="level.value">{{level.value}}</option>              
+                    <option [ngValue]="null">Select level...</option>
+                    <option *ngFor="let level of eLevelTypes | keyvalue" [ngValue]="level.value">{{level.value}}
+                    </option>
                 </select>
-                <span style="color: red;" *ngIf="rForm.get('level').errors && (rForm.get('level').touched || rForm.get('level').dirty)">                
+                <span style="color: red;"
+                    *ngIf="rForm.get('level').errors && (rForm.get('level').touched || rForm.get('level').dirty)">
                     <span *ngIf="rForm.get('level').errors.required">Level is required</span>
                 </span>
             </div>
+        -->
+
+            <!-- Name -->
+            <section>
+                <mat-form-field appearance="fill">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" formControlName="name" placeholder="Name">
+                    <mat-error *ngIf="rForm.get('name').errors && rForm.get('name').errors.required">
+                        Name is required
+                    </mat-error>
+                    <mat-error
+                        *ngIf="rForm.get('name').errors && (rForm.get('name').errors.minlength || rForm.get('name').errors.maxlength)">
+                        Name
+                        must be greater than 3 characters and less than 55 characters
+                    </mat-error>
+                </mat-form-field>
+            </section>
+
+            <!--
+            <label for="name">Name:</label>
+            <input type="text" placeholder="Name" name="name" formControlName="name" class="form-control mb-4">
+            <span style="color: red;"
+                *ngIf="rForm.get('name').errors && (rForm.get('name').touched || rForm.get('name').dirty)">
+                <span *ngIf="rForm.get('name').errors.required">Name is required</span>
+                <span *ngIf="rForm.get('name').errors.minlength || rForm.get('name').errors.maxlength">Name must be
+                    greater than 3 characters and less than 55 characters</span>
+            </span>
+        -->
+
+            <!-- University -->
+            <section>
+                <mat-form-field appearance="fill">
+                    <mat-label>University</mat-label>
+                    <input matInput type="text" formControlName="university" placeholder="University">
+                    <mat-error *ngIf="rForm.get('university').errors && rForm.get('university').errors.required">
+                        University is required
+                    </mat-error>
+                    <mat-error
+                        *ngIf="rForm.get('university').errors && (rForm.get('university').errors.minlength || rForm.get('university').errors.maxlength)">
+                        University
+                        must be greater than 3 characters and less than 55 characters
+                    </mat-error>
+                </mat-form-field>
+            </section>
+            <!--
             <div>
-                <!-- Name -->
-                <label for="name">Name:</label>
-                <input type="text" placeholder="Name" name="name" formControlName="name" class="form-control mb-4">
-                <span style="color: red;" *ngIf="rForm.get('name').errors && (rForm.get('name').touched || rForm.get('name').dirty)">                
-                    <span *ngIf="rForm.get('name').errors.required">Name is required</span> 
-                    <span *ngIf="rForm.get('name').errors.minlength || rForm.get('name').errors.maxlength">Name must be greater than 3 characters and less than 55 characters</span>
-                </span>
-            </div>
-            <div>
-                <!-- University -->
                 <label for="university">University:</label>
-                <input type="text" placeholder="University" name="university" formControlName="university" class="form-control mb-4">
-                <span style="color: red;" *ngIf="rForm.get('university').errors && (rForm.get('university').touched || rForm.get('university').dirty)">                
-                    <span *ngIf="rForm.get('university').errors.required">University is required</span> 
-                    <span *ngIf="rForm.get('university').errors.minlength || rForm.get('university').errors.maxlength">University must be greater than 3 characters and less than 55 characters</span>
+                <input type="text" placeholder="University" name="university" formControlName="university"
+                    class="form-control mb-4">
+                <span style="color: red;"
+                    *ngIf="rForm.get('university').errors && (rForm.get('university').touched || rForm.get('university').dirty)">
+                    <span *ngIf="rForm.get('university').errors.required">University is required</span>
+                    <span
+                        *ngIf="rForm.get('university').errors.minlength || rForm.get('university').errors.maxlength">University
+                        must be greater than 3 characters and less than 55 characters</span>
                 </span>
             </div>
+        -->
+
+            <!-- Finish date -->
+            <section>
+                <mat-form-field appearance="fill">
+                    <mat-label>Finish date
+                    </mat-label>
+                    <input matInput placeholder="dd/MM/yyyy" formControlName="date" [matDatepicker]="datePicker">
+                    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #datePicker></mat-datepicker>
+                    <mat-error *ngIf="rForm.get('date').errors && rForm.get('date').errors?.errorFormatDate">
+                        Invalid format date
+                    </mat-error>
+                </mat-form-field>
+            </section>
+
+            <!--
             <div>
-                <!-- Finish date -->
+
                 <label for="date">Finish date:</label>
-                <input type="text" placeholder="dd/MM/yyyy" name="date" formControlName="date" class="form-control mb-4">
-                <span style="color: red;" *ngIf="rForm.get('date').errors && (rForm.get('date').touched || rForm.get('date').dirty)">                
+                <input type="text" placeholder="dd/MM/yyyy" name="date" formControlName="date"
+                    class="form-control mb-4">
+                <span style="color: red;"
+                    *ngIf="rForm.get('date').errors && (rForm.get('date').touched || rForm.get('date').dirty)">
                     <span *ngIf="rForm.get('date').errors?.errorFormatDate">Invalid format date</span>
                 </span>
             </div>
-            <button class="btn btn-primary my-4 float-left" type="submit" [disabled]="rForm.invalid">Save</button>
+        -->
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="rForm.invalid">Save</button>
         </div>
 
     </form>

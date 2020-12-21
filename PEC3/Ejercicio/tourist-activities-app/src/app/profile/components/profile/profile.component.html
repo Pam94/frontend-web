@@ -11,16 +11,15 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Company Name</mat-label>
                     <input matInput type="text" [formControl]="companyName" placeholder="Company Name" />
-                </mat-form-field>
-                <section
-                    *ngIf="profileForm.get('companyName').errors && (profileForm.get('companyName').touched || profileForm.get('companyName').dirty)">
-                    <mat-error *ngIf="profileForm.get('companyName').errors.required">Name is required</mat-error>
                     <mat-error
-                        *ngIf="profileForm.get('companyName').errors.minlength || profileForm.get('companyName').errors.maxlength">
+                        *ngIf="profileForm.get('companyName').errors && profileForm.get('companyName').errors.required">
+                        Name is required</mat-error>
+                    <mat-error
+                        *ngIf="profileForm.get('companyName').errors && (profileForm.get('companyName').errors.minlength || profileForm.get('companyName').errors.maxlength)">
                         Company
                         name must be greater than 3 characters and less than 55 characters
                     </mat-error>
-                </section>
+                </mat-form-field>
             </section>
 
             <!--
@@ -60,18 +59,17 @@
             <mat-form-field appearance="fill">
                 <mat-label>Name</mat-label>
                 <input matInput type="text" [formControl]="name" placeholder="User Name">
-            </mat-form-field>
-            <section
-                *ngIf="profileForm.get('name').errors && (profileForm.get('name').touched || profileForm.get('name').dirty)">
-                <mat-error *ngIf="profileForm.get('name').errors.required">
+                <mat-error *ngIf="profileForm.get('name').errors && profileForm.get('name').errors.required">
                     Name is required
                 </mat-error>
-                <mat-error *ngIf="profileForm.get('name').errors.minlength || profileForm.get('name').errors.maxlength">
+                <mat-error
+                    *ngIf="profileForm.get('name').errors && (profileForm.get('name').errors.minlength || profileForm.get('name').errors.maxlength)">
                     User name
                     must be greater than 3 characters and less than 55 characters
                 </mat-error>
-                <mat-error *ngIf="profileForm.get('name').errors.pattern">Invalid character</mat-error>
-            </section>
+                <mat-error *ngIf="profileForm.get('name').errors && profileForm.get('name').errors.pattern">Invalid
+                    character</mat-error>
+            </mat-form-field>
         </section>
 
         <!--
@@ -90,18 +88,15 @@
             <mat-form-field appearance="fill">
                 <mat-label>Surname</mat-label>
                 <input matInput type="text" [formControl]="surname" placeholder="Surname">
-            </mat-form-field>
-            <section
-                *ngIf="profileForm.get('surname').errors && (profileForm.get('surname').touched || profileForm.get('surname').dirty)">
                 <mat-error
-                    *ngIf="profileForm.get('surname').errors.minlength || profileForm.get('surname').errors.maxlength">
+                    *ngIf="profileForm.get('surname').errors && (profileForm.get('surname').errors.minlength || profileForm.get('surname').errors.maxlength)">
                     User
                     surname must be greater than 3 characters and less than 55 characters
                 </mat-error>
-                <mat-error *ngIf="profileForm.get('surname').errors.pattern">
+                <mat-error *ngIf="profileForm.get('surname').errors && profileForm.get('surname').errors.pattern">
                     Invalid character
                 </mat-error>
-            </section>
+            </mat-form-field>
         </section>
 
         <!--
@@ -121,6 +116,10 @@
             <input matInput placeholder="dd/MM/yyyy" [formControl]="birthDate" [matDatepicker]="datePicker">
             <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
             <mat-datepicker #datePicker></mat-datepicker>
+            <mat-error
+                *ngIf="profileForm.get('birthDate').errors && profileForm.get('birthDate').errors?.errorFormatDate">
+                Invalid format date
+            </mat-error>
         </mat-form-field>
 
         <!--
@@ -158,17 +157,14 @@
         </select>
     -->
 
-
         <!-- NIF -->
         <section>
             <mat-form-field appearance="fill">
                 <mat-label>NIF</mat-label>
                 <input matInput type="text" [formControl]="nif" placeholder="NIF" />
+                <!-- Check NIF -->
+                <mat-error *ngIf="profileForm.errors && profileForm.errors?.errorNIF">Wrong NIF</mat-error>
             </mat-form-field>
-            <!-- Check NIF -->
-            <section *ngIf="profileForm.errors">
-                <mat-error *ngIf="profileForm.errors?.errorNIF">Wrong NIF</mat-error>
-            </section>
         </section>
         <!--
         <input type="text" [formControl]="nif" class="form-control mb-4" placeholder="NIF">
@@ -178,18 +174,15 @@
         </span>
     -->
 
-
         <!-- About me -->
         <mat-form-field appearance="fill">
             <mat-label>About me</mat-label>
-            <textarea matInput [formControl]="aboutMe" placeholder="About me" cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
+            <textarea matInput [formControl]="aboutMe" placeholder="About me"></textarea>
         </mat-form-field>
 
         <!--
         <textarea [formControl]="aboutMe" class="form-control mb-4" placeholder="About me"></textarea>
         -->
-
 
         <!-- UPDATE BUTTON -->
         <section>
@@ -201,12 +194,60 @@
             INFORMATION</button>
         -->
     </form>
-    <form class="text-center border border-light p-5">
+    <form class="formTable">
         <br>
         <h5 class="float-left">EDUCATION</h5>
         <br>
         <hr style="border-top: 1px solid blue;" />
-        <ul class="list-group">
+        <!-- <ul class="list-group">-->
+        <table mat-table [dataSource]="user.educations" class="mat-elevation-z8">
+
+            <!--Type Column-->
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>Type</th>
+                <td mat-cell *matCellDef="let education">{{education.type}}</td>
+            </ng-container>
+
+            <!--Level Column-->
+            <ng-container matColumnDef="level">
+                <th mat-header-cell *matHeaderCellDef>Level</th>
+                <td mat-cell *matCellDef="let education">{{education.level}}</td>
+            </ng-container>
+
+            <!--Name Column-->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let education">{{education.name}}</td>
+            </ng-container>
+
+            <!--University Column-->
+            <ng-container matColumnDef="university">
+                <th mat-header-cell *matHeaderCellDef>University</th>
+                <td mat-cell *matCellDef="let education">{{education.university}}</td>
+            </ng-container>
+
+            <!--Finish Date Column-->
+            <ng-container matColumnDef="finishDate">
+                <th mat-header-cell *matHeaderCellDef>Finish Date</th>
+                <td mat-cell *matCellDef="let education">{{education.finish}}</td>
+            </ng-container>
+
+            <!--Actions Column-->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let education">
+                    <button mat-raised-button color="primary"
+                        [routerLink]="['/profile-education', education.uid]">Edit</button>
+                    <button mat-raised-button color="primary"
+                        (click)="onClickDeleteEducation(education.uid)">Delete</button></td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedEducationColumns">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: displayedEducationColumns;"></tr>
+        </table>
+
+        <!--
             <table class="table table-bordered">
                 <thead>
                     <tr style="background-color:blue;color: #fff;">
@@ -234,39 +275,78 @@
                     </tr>
                 </tbody>
             </table>
-            <button class="btn btn-outline-primary float-left" [routerLink]="['/profile-education']">Add</button>
-        </ul>
+        -->
+
+        <button mat-raised-button color="primary" [routerLink]="['/profile-education']">Add</button>
+        <!--</ul>-->
     </form>
-    <form class="text-center border border-light p-5">
+    <form class="formTable">
         <br>
         <h5 class="float-left">LANGUAGES</h5>
         <br>
         <hr style="border-top: 1px solid blue;" />
-        <ul class="list-group">
-            <table class="table table-bordered">
-                <thead>
-                    <tr style="background-color:blue;color: #fff;">
-                        <th>Level</th>
-                        <th>Language</th>
-                        <th>Finish date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let language of user.languages">
-                        <th>{{ language.level }}</th>
-                        <td>{{ language.language }}</td>
-                        <td>{{ language.finish }}</td>
-                        <td>
-                            <button class="btn btn-outline-info"
-                                [routerLink]="['/profile-language', language.uid]">Edit</button>
-                            <button class="btn btn-outline-danger"
-                                (click)="onClickDeleteLanguage(language.uid)">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-outline-primary float-left" [routerLink]="['/profile-language']">Add</button>
-        </ul>
+        <!--    <ul class="list-group">-->
+        <table mat-table [dataSource]="user.languages" class="mat-elevation-z8">
+
+            <!--Level Column-->
+            <ng-container matColumnDef="level">
+                <th mat-header-cell *matHeaderCellDef>Level</th>
+                <td mat-cell *matCellDef="let language">{{language.level}}</td>
+            </ng-container>
+
+            <!--Language Column-->
+            <ng-container matColumnDef="language">
+                <th mat-header-cell *matHeaderCellDef>Language</th>
+                <td mat-cell *matCellDef="let language">{{language.language}}</td>
+            </ng-container>
+
+            <!--Finish Date Column-->
+            <ng-container matColumnDef="finishDate">
+                <th mat-header-cell *matHeaderCellDef>Finish Date</th>
+                <td mat-cell *matCellDef="let language">{{language.finish}}</td>
+            </ng-container>
+
+            <!--Actions Column-->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let language">
+                    <button mat-raised-button color="primary"
+                        [routerLink]="['/profile-language', language.uid]">Edit</button>
+                    <button mat-raised-button color="primary"
+                        (click)="onClickDeleteLanguage(language.uid)">Delete</button></td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedLanguageColumns">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: displayedLanguageColumns;"></tr>
+        </table>
+
+        <!--
+        <table class="table table-bordered">
+            <thead>
+                <tr style="background-color:blue;color: #fff;">
+                    <th>Level</th>
+                    <th>Language</th>
+                    <th>Finish date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let language of user.languages">
+                    <th>{{ language.level }}</th>
+                    <td>{{ language.language }}</td>
+                    <td>{{ language.finish }}</td>
+                    <td>
+                        <button class="btn btn-outline-info"
+                            [routerLink]="['/profile-language', language.uid]">Edit</button>
+                        <button class="btn btn-outline-danger"
+                            (click)="onClickDeleteLanguage(language.uid)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    -->
+        <button mat-raised-button color="primary" [routerLink]="['/profile-language']">Add</button>
+        <!--    </ul>-->
     </form>
 </div>

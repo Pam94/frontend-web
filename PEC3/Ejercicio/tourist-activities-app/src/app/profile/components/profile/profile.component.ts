@@ -20,6 +20,9 @@ export class ProfileComponent implements OnInit {
   eUserNationalities = userNationalities;
   public user: User;
 
+  displayedEducationColumns: string[] = ['type', 'level', 'name', 'university', 'finishDate', 'actions']
+  displayedLanguageColumns: string[] = ['level', 'language', 'finishDate', 'actions']
+
   public name: FormControl;
   public surname: FormControl;
   public nationality: FormControl;

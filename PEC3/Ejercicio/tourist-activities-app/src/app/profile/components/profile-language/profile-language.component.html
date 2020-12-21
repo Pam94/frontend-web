@@ -1,8 +1,22 @@
 <div class="container">
-    <form class="text-center border border-light p-5" [formGroup]="rForm" (submit)="submit()"> 
+    <form [formGroup]="rForm" (submit)="submit()">
         <div class="form-group">
-            <div>
+            <section>
                 <!-- Level -->
+                <mat-form-field appearance="fill">
+                    <mat-label>Select level...</mat-label>
+                    <mat-select formControlName="level" name="level" placeholder="Level">
+                        <mat-option *ngFor="let level of eLanguageLevels | keyvalue" [value]="level.value">
+                            {{level.value}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="rForm.get('level').errors && rForm.get('level').errors.required">Level is required
+                    </mat-error>
+                </mat-form-field>
+            </section>
+
+            <!--
+            <div>
                 <label for="level">Level:</label>
                 <select formControlName="level" class="form-control mb-4" placeholder="Level">
                     <option [ngValue]="null">Select level...</option>                
@@ -12,27 +26,65 @@
                     <span *ngIf="rForm.get('level').errors.required">Level is required</span>
                 </span>
             </div>
-            <div>
+        -->
+            <section>
                 <!-- Language -->
-                <label for="language">Language:</label>
-                <select formControlName="language" class="form-control mb-4" placeholder="Level">
-                    <option [ngValue]="null">Select language...</option>                
-                    <option *ngFor="let language of eActivityLenguages | keyvalue" [ngValue]="language.value">{{language.value}}</option>              
-                </select>
-                <span style="color: red;" *ngIf="rForm.get('language').errors && (rForm.get('language').touched || rForm.get('language').dirty)">                
-                    <span *ngIf="rForm.get('language').errors.required">Language is required</span>
-                </span>
-            </div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Select language...</mat-label>
+                    <mat-select formControlName="language" name="language" placeholder="Language">
+                        <mat-option *ngFor="let language of eActivityLenguages | keyvalue" [value]="language.value">
+                            {{language.value}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="rForm.get('language').errors && rForm.get('language').errors.required">Language is
+                        required
+                    </mat-error>
+                </mat-form-field>
+            </section>
+
+            <!--
             <div>
+            <label for="language">Language:</label>
+            <select formControlName="language" class="form-control mb-4" placeholder="Level">
+                <option [ngValue]="null">Select language...</option>
+                <option *ngFor="let language of eActivityLenguages | keyvalue" [ngValue]="language.value">
+                    {{language.value}}</option>
+            </select>
+            <span style="color: red;"
+                *ngIf="rForm.get('language').errors && (rForm.get('language').touched || rForm.get('language').dirty)">
+                <span *ngIf="rForm.get('language').errors.required">Language is required</span>
+            </span>
+        </div>
+        -->
+
+            <section>
                 <!-- Date -->
+                <mat-form-field appearance="fill">
+                    <mat-label>Title date
+                    </mat-label>
+                    <input matInput placeholder="dd/MM/yyyy" formControlName="date" [matDatepicker]="datePicker">
+                    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #datePicker></mat-datepicker>
+                    <mat-error *ngIf="rForm.get('date').errors && rForm.get('date').errors?.errorFormatDate">
+                        Invalid format date
+                    </mat-error>
+                </mat-form-field>
+            </section>
+
+            <!--
+            <div>
                 <label for="date">Title date:</label>
-                <input type="text" placeholder="dd/MM/yyyy" name="date" formControlName="date" class="form-control mb-4">
-                <span style="color: red;" *ngIf="rForm.get('date').errors && (rForm.get('date').touched || rForm.get('date').dirty)">                
+                <input type="text" placeholder="dd/MM/yyyy" name="date" formControlName="date"
+                    class="form-control mb-4">
+                <span style="color: red;"
+                    *ngIf="rForm.get('date').errors && (rForm.get('date').touched || rForm.get('date').dirty)">
                     <span *ngIf="rForm.get('date').errors?.errorFormatDate">Invalid format date</span>
                 </span>
             </div>
-            <button class="btn btn-primary my-4 float-left" type="submit" [disabled]="rForm.invalid">Save</button>
-        </div>
+        -->
 
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="rForm.invalid">Save</button>
+        </div>
     </form>
 </div>

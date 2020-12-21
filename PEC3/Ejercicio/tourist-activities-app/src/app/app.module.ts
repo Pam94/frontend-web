@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { EffectsArray } from './app.reducers';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +34,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginModule,
     ActivitiesModule,
     ProfileModule,
-    StoreModule.forRoot( appReducers, {
+    StoreModule.forRoot(appReducers, {
       runtimeChecks: {
         strictStateImmutability: false,
         strictActionImmutability: false,
@@ -43,7 +44,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production
     }),
-    StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
+    StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
     EffectsModule.forRoot(EffectsArray),
     HttpClientModule,
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
