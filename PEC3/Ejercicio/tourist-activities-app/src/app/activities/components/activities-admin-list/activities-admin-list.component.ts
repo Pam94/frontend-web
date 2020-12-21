@@ -18,6 +18,8 @@ export class ActivitiesAdminListComponent implements OnInit {
   activitiesListState$: ActivityListState;
   userState$: UserState;
 
+  displayedActivityColumns: string[] = ['name', 'category', 'price', 'language', 'date', 'peopleRegistered', 'actions']
+
   constructor(private formBuilder: FormBuilder, public router: Router, private store: Store<AppState>) {
     this.store.select('activities').subscribe(activities => this.activitiesListState$ = activities);
     this.store.select('user').subscribe(userStates => this.userState$ = userStates);

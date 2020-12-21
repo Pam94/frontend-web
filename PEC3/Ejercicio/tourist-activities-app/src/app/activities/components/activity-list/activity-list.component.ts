@@ -24,6 +24,8 @@ export class ActivityListComponent implements OnInit {
   userState$: UserState;
   isLoading: boolean;
 
+  displayedActivityColumns: string[] = ['name', 'category', 'price', 'language', 'actions']
+
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {
     this.store.select('user').subscribe(user => this.userState$ = user);
     this.store.select('activities').subscribe(activities => this.activitiesListState$ = activities);
