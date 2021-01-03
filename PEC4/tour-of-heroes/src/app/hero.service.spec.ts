@@ -115,9 +115,7 @@ describe('HeroService', () => {
 
     describe('#addHero', () => {
 
-        //const postUrl = heroService.heroesUrl;
-
-        it('should add a new hero', () => {
+        it('should add a new hero and return it', () => {
 
             heroService.addHero(mockHero).subscribe(
                 response => expect(response).toEqual(mockHero),
@@ -125,13 +123,13 @@ describe('HeroService', () => {
             );
 
             const req =
-                httpTestingControler.expectOne('api/heroes');
+                httpTestingControler.expectOne(heroService.heroesUrl);
             expect(req.request.method).toEqual('POST');
 
             req.flush(mockHero);
         });
 
-        it('should return an error when expected', () => {
+        it('should return an error', () => {
 
             heroService.addHero(mockHero).subscribe(
                 response => expect(response).toBeUndefined(),
@@ -139,11 +137,91 @@ describe('HeroService', () => {
             );
 
             const req =
-                httpTestingControler.expectOne('api/heroes');
+                httpTestingControler.expectOne(heroService.heroesUrl);
             expect(req.request.method).toEqual('POST');
 
             req.flush('Invalid request parameters', { status: 404, statusText: 'Bad Request' });
 
         });
+    });
+
+    describe('#updateHero', () => {
+
+        const updatedHero: Hero = { id: 1, name: 'Flash' };
+
+        it('should update the data of an existing hero', () => {
+            heroService.updateHero(updatedHero).subscribe(hero =>
+                expect(hero).toBe(updatedHero),
+                fail
+            );
+
+            const req =
+                httpTestingControler.expectOne(heroService.heroesUrl);
+            expect(req.request.method).toEqual('PUT');
+            req.flush(updatedHero);
+
+        });
+
+        it('should return an error', () => {
+            heroService.updateHero(updatedHero).subscribe(hero =>
+                expect(hero).toBeUndefined(),
+                fail
+            );
+
+            const req =
+                httpTestingControler.expectOne(heroService.heroesUrl);
+            expect(req.request.method).toEqual('PUT');
+
+            req.flush('Invalid request parameters', { status: 404, statusText: 'Bad Request' });
+
+        });
+
+    });
+
+    describe('#deleteHero', () => {
+
+        const deleteURL = `api/heroes/${mockId}`;
+
+        it('should delete an expected hero by its ID', () => {
+
+            heroService.deleteHero(mockId).subscribe(hero =>
+                expect(hero).toBe(mockHero),
+                fail
+            );
+
+            const req =
+                httpTestingControler.expectOne(deleteURL);
+            expect(req.request.method).toEqual('DELETE');
+            req.flush(mockHero);
+
+        });
+
+        it('should delete an expected hero', () => {
+
+            heroService.deleteHero(mockHero).subscribe(hero =>
+                expect(hero).toBe(mockHero),
+                fail
+            );
+
+            const req =
+                httpTestingControler.expectOne(deleteURL);
+            expect(req.request.method).toEqual('DELETE');
+            req.flush(mockHero);
+
+        });
+
+        it('shuld return an error', () => {
+            heroService.deleteHero(mockHero).subscribe(hero =>
+                expect(hero).toBeUndefined(),
+                fail
+            );
+
+            const req =
+                httpTestingControler.expectOne(deleteURL);
+            expect(req.request.method).toEqual('DELETE');
+
+            req.flush('Invalid request parameters', { status: 404, statusText: 'Bad Request' });
+        });
+
     });
 });
