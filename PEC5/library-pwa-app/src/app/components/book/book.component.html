@@ -1,1 +1,17 @@
-<p>book works!</p>
+<div class="container mt-5">
+
+    <div *ngIf="book" class="row animate__animated animate__bounce animate__fadeIn">
+        <div class="col-md-9">
+            <p><strong>Title:</strong> {{book.title}}</p>
+            <p><strong>Author:</strong> {{book.author}}</p>
+            <p><strong>Sinopsis:</strong> {{book.content_short}}</p>
+            <p><strong>Language:</strong> {{book.language}}</p>
+            <img style="width: 80%; height:80%;" class="rounded" src="{{book.thumbnail}}">
+        </div>
+
+        <div class="col-md-3">
+            <a class="btn btn-danger" routerLink="/">Back</a>
+        </div>
+    </div>
+
+</div>
