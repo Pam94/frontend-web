@@ -1,0 +1,9 @@
+<div class="container">
+    <h1>Books</h1>
+    <ul class="list-group">
+        <a *ngFor="let book of books" [routerLink]="['/book', book.ID]"
+            class="list-group-item list-group-item-action animate__animated animate__bounce animate__fadeIn">
+            {{book.title}} - {{book.author}}
+        </a>
+    </ul>
+</div>
